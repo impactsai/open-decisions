@@ -1,0 +1,1059 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-decisions.org/schemas/comparison/0.1.0-draft.1/contract.schema.json",
+  "title": "Comparison kit draft contract",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "text": {
+      "type": "string",
+      "pattern": "^[\\s\\S]{1,2000}$"
+    },
+    "version": {
+      "const": "comparison/0.1.0-draft.1"
+    },
+    "method": {
+      "const": "smaa-weighted-sum-v1"
+    },
+    "ppm": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "bp": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "scalar": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "minimum": -1000000000,
+          "maximum": 1000000000
+        },
+        {
+          "$ref": "#/$defs/id"
+        }
+      ]
+    },
+    "evaluator": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "methodVersion"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "measurement",
+                "human"
+              ]
+            },
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "methodVersion": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "methodVersion",
+            "provider",
+            "model",
+            "modelVersion",
+            "promptDigest",
+            "mappingDigest"
+          ],
+          "properties": {
+            "kind": {
+              "const": "model"
+            },
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "methodVersion": {
+              "$ref": "#/$defs/id"
+            },
+            "provider": {
+              "$ref": "#/$defs/id"
+            },
+            "model": {
+              "$ref": "#/$defs/text"
+            },
+            "modelVersion": {
+              "$ref": "#/$defs/text"
+            },
+            "promptDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "mappingDigest": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        }
+      ]
+    },
+    "scale": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "minimum",
+            "maximum",
+            "direction",
+            "unit"
+          ],
+          "properties": {
+            "kind": {
+              "const": "numeric"
+            },
+            "minimum": {
+              "type": "integer",
+              "minimum": -1000000000,
+              "maximum": 1000000000
+            },
+            "maximum": {
+              "type": "integer",
+              "minimum": -1000000000,
+              "maximum": 1000000000
+            },
+            "direction": {
+              "enum": [
+                "maximize",
+                "minimize"
+              ]
+            },
+            "unit": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "levels"
+          ],
+          "properties": {
+            "kind": {
+              "const": "categorical"
+            },
+            "levels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "utilityBp"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "utilityBp": {
+                    "$ref": "#/$defs/bp"
+                  }
+                }
+              },
+              "minItems": 2,
+              "maxItems": 32
+            }
+          }
+        }
+      ]
+    },
+    "criterion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "evaluator",
+            "requiredEvidenceSlots",
+            "role",
+            "scale",
+            "minSatisfactionPpm"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "evaluator": {
+              "$ref": "#/$defs/evaluator"
+            },
+            "requiredEvidenceSlots": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            },
+            "role": {
+              "const": "constraint"
+            },
+            "scale": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "boolean"
+                }
+              }
+            },
+            "minSatisfactionPpm": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "acceptedCalibrationDigests": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/digest"
+              },
+              "maxItems": 16
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "evaluator",
+            "requiredEvidenceSlots",
+            "role",
+            "scale",
+            "weightBounds"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "evaluator": {
+              "$ref": "#/$defs/evaluator"
+            },
+            "requiredEvidenceSlots": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            },
+            "role": {
+              "const": "preference"
+            },
+            "scale": {
+              "$ref": "#/$defs/scale"
+            },
+            "weightBounds": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "minBp",
+                "maxBp"
+              ],
+              "properties": {
+                "minBp": {
+                  "$ref": "#/$defs/bp"
+                },
+                "maxBp": {
+                  "$ref": "#/$defs/bp"
+                }
+              }
+            },
+            "acceptedCalibrationDigests": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/digest"
+              },
+              "maxItems": 16
+            }
+          }
+        }
+      ]
+    },
+    "evidenceSlot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "kit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "id",
+        "kitVersion",
+        "title",
+        "method",
+        "evidenceSlots",
+        "criteria",
+        "weightOrders",
+        "limits",
+        "recommendation"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "comparison-kit"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kitVersion": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "method": {
+          "$ref": "#/$defs/method"
+        },
+        "evidenceSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceSlot"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "weightOrders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "higher",
+              "lower"
+            ],
+            "properties": {
+              "higher": {
+                "$ref": "#/$defs/id"
+              },
+              "lower": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maxOptions",
+            "maxSamples",
+            "maxExactScenarios",
+            "maxWork"
+          ],
+          "properties": {
+            "maxOptions": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 32
+            },
+            "maxSamples": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 100000
+            },
+            "maxExactScenarios": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            },
+            "maxWork": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20000000
+            }
+          }
+        },
+        "recommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "minSoleFirstPpm",
+            "minLeadPpm",
+            "maxExpectedRegretBp",
+            "requireValidatedModels"
+          ],
+          "properties": {
+            "minSoleFirstPpm": {
+              "type": "integer",
+              "minimum": 500001,
+              "maximum": 1000000
+            },
+            "minLeadPpm": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "maxExpectedRegretBp": {
+              "$ref": "#/$defs/bp"
+            },
+            "requireValidatedModels": {
+              "const": true
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slotId",
+        "digest"
+      ],
+      "properties": {
+        "slotId": {
+          "$ref": "#/$defs/id"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "id",
+        "kitDigest",
+        "options"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "evaluation-context"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kitDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "label",
+              "evidence"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "label": {
+                "$ref": "#/$defs/text"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/evidence"
+                },
+                "minItems": 1,
+                "maxItems": 32
+              }
+            }
+          },
+          "minItems": 2,
+          "maxItems": 32
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "value",
+        "massPpm"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "value": {
+          "$ref": "#/$defs/scalar"
+        },
+        "massPpm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    },
+    "calibration": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "unvalidated"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reportDigest"
+          ],
+          "properties": {
+            "status": {
+              "const": "validated"
+            },
+            "reportDigest": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        }
+      ]
+    },
+    "assessment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "optionId",
+            "criterionId",
+            "evaluator",
+            "evidence",
+            "status",
+            "outcomes",
+            "calibration"
+          ],
+          "properties": {
+            "optionId": {
+              "$ref": "#/$defs/id"
+            },
+            "criterionId": {
+              "$ref": "#/$defs/id"
+            },
+            "evaluator": {
+              "$ref": "#/$defs/evaluator"
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidence"
+              },
+              "minItems": 1,
+              "maxItems": 32
+            },
+            "status": {
+              "const": "ok"
+            },
+            "outcomes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/outcome"
+              },
+              "minItems": 1,
+              "maxItems": 32
+            },
+            "calibration": {
+              "$ref": "#/$defs/calibration"
+            },
+            "rawOutputDigest": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "optionId",
+            "criterionId",
+            "evaluator",
+            "evidence",
+            "status",
+            "detail"
+          ],
+          "properties": {
+            "optionId": {
+              "$ref": "#/$defs/id"
+            },
+            "criterionId": {
+              "$ref": "#/$defs/id"
+            },
+            "evaluator": {
+              "$ref": "#/$defs/evaluator"
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidence"
+              },
+              "minItems": 1,
+              "maxItems": 32
+            },
+            "status": {
+              "enum": [
+                "unavailable",
+                "error"
+              ]
+            },
+            "detail": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      ]
+    },
+    "assessments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "contextDigest",
+        "assessments"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "assessment-set"
+        },
+        "contextDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessment"
+          },
+          "minItems": 1,
+          "maxItems": 1024
+        }
+      }
+    },
+    "weight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterionId",
+        "weightBp"
+      ],
+      "properties": {
+        "criterionId": {
+          "$ref": "#/$defs/id"
+        },
+        "weightBp": {
+          "$ref": "#/$defs/bp"
+        }
+      }
+    },
+    "weightScenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "massPpm",
+        "weights"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "massPpm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "weights": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/weight"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      }
+    },
+    "cellSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "optionId",
+        "criterionId",
+        "outcomeId"
+      ],
+      "properties": {
+        "optionId": {
+          "$ref": "#/$defs/id"
+        },
+        "criterionId": {
+          "$ref": "#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "jointScenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "massPpm",
+        "weightScenarioId",
+        "selections"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "massPpm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "weightScenarioId": {
+          "$ref": "#/$defs/id"
+        },
+        "selections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cellSelection"
+          },
+          "minItems": 1,
+          "maxItems": 1024
+        }
+      }
+    },
+    "dependence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "justification"
+          ],
+          "properties": {
+            "kind": {
+              "const": "independent"
+            },
+            "justification": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "justification",
+            "scenarios"
+          ],
+          "properties": {
+            "kind": {
+              "const": "joint"
+            },
+            "justification": {
+              "$ref": "#/$defs/text"
+            },
+            "scenarios": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/jointScenario"
+              },
+              "minItems": 1,
+              "maxItems": 10000
+            }
+          }
+        }
+      ]
+    },
+    "computation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "const": "exact"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "algorithm",
+            "samples"
+          ],
+          "properties": {
+            "mode": {
+              "const": "monte-carlo"
+            },
+            "algorithm": {
+              "const": "xoshiro128ss-v1"
+            },
+            "samples": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 100000
+            }
+          }
+        }
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "id",
+        "contextDigest",
+        "assessmentDigest",
+        "weights",
+        "dependence",
+        "computation"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "comparison-request"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "contextDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "assessmentDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "weights": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/weightScenario"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "dependence": {
+          "$ref": "#/$defs/dependence"
+        },
+        "computation": {
+          "$ref": "#/$defs/computation"
+        }
+      }
+    },
+    "manifestTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterionId",
+        "evaluator",
+        "scale",
+        "requiredEvidenceSlots"
+      ],
+      "properties": {
+        "criterionId": {
+          "$ref": "#/$defs/id"
+        },
+        "evaluator": {
+          "$ref": "#/$defs/evaluator"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        },
+        "requiredEvidenceSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "acceptedCalibrationDigests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/digest"
+          },
+          "maxItems": 16
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "kitDigest",
+        "method",
+        "evidenceSlots",
+        "tasks"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "comparison-manifest"
+        },
+        "kitDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "method": {
+          "$ref": "#/$defs/method"
+        },
+        "evidenceSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceSlot"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/manifestTask"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kit",
+        "context",
+        "assessments",
+        "request"
+      ],
+      "properties": {
+        "kit": {
+          "$ref": "#/$defs/kit"
+        },
+        "context": {
+          "$ref": "#/$defs/context"
+        },
+        "assessments": {
+          "$ref": "#/$defs/assessments"
+        },
+        "request": {
+          "$ref": "#/$defs/request"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/kit"
+    },
+    {
+      "$ref": "#/$defs/context"
+    },
+    {
+      "$ref": "#/$defs/assessments"
+    },
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/manifest"
+    },
+    {
+      "$ref": "#/$defs/bundle"
+    }
+  ]
+}

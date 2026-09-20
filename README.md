@@ -11,7 +11,8 @@ Open Decisions defines a portable record of that process. It lets different
 applications, evaluators, and decision services exchange the same decision
 without requiring the same model, cloud, identity system, or payment network.
 
-**Status: 0.1.0-draft.1 — initial community proposal.** This repository contains a
+**Status: 0.2.0-draft.1 — community proposal.** The original core remains at
+0.1.0-draft.1; the additive comparison profile has its own version. This repository contains a
 working specification, schemas, examples, and a reference conformance checker.
 It does not claim community adoption, independent implementation, certification,
 or production readiness. Feedback and alternative implementations are welcome.
@@ -39,6 +40,7 @@ settlement each require their own records. None of these steps proves the next.
 | Inspect the wire format | [JSON Schema](schemas/0.1.0-draft.1/bundle.schema.json) |
 | Determine whether conditions are met | [Threshold eligibility profile](spec/0.1.0-draft.1/profiles/threshold-gates.md) |
 | Compare options under uncertainty | [Scenario ranking profile](spec/0.1.0-draft.1/profiles/weighted-scenarios.md) |
+| Build comparison kits and typed assessment manifests | [Comparison profile](spec/comparison/0.1.0-draft.1/core.md) and [RFC 0003](rfcs/0003-comparison-kits.md) |
 | Check an implementation | [Conformance requirements](spec/0.1.0-draft.1/conformance.md) |
 | Walk through a decision | [Examples guide](examples/README.md) |
 | Integrate Jev, IXO, or a connector | [Integration boundaries](docs/integrations.md) |

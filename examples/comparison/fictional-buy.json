@@ -1,0 +1,413 @@
+{
+  "kit": {
+    "profileVersion": "comparison/0.1.0-draft.1",
+    "kind": "comparison-kit",
+    "id": "fictional-buy",
+    "kitVersion": "v1",
+    "title": "Fictional devices: price and suitability",
+    "method": "smaa-weighted-sum-v1",
+    "evidenceSlots": [
+      {
+        "id": "specification",
+        "description": "Fictional supplied specifications, not verified product claims"
+      }
+    ],
+    "criteria": [
+      {
+        "id": "eligible",
+        "role": "constraint",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "requiredEvidenceSlots": [
+          "specification"
+        ],
+        "scale": {
+          "kind": "boolean"
+        },
+        "minSatisfactionPpm": 1000000
+      },
+      {
+        "id": "price",
+        "role": "preference",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "requiredEvidenceSlots": [
+          "specification"
+        ],
+        "scale": {
+          "kind": "numeric",
+          "minimum": 0,
+          "maximum": 1000,
+          "direction": "minimize",
+          "unit": "fictional-units"
+        },
+        "weightBounds": {
+          "minBp": 0,
+          "maxBp": 10000
+        }
+      },
+      {
+        "id": "fit",
+        "role": "preference",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "requiredEvidenceSlots": [
+          "specification"
+        ],
+        "scale": {
+          "kind": "categorical",
+          "levels": [
+            {
+              "id": "low",
+              "utilityBp": 0
+            },
+            {
+              "id": "high",
+              "utilityBp": 10000
+            }
+          ]
+        },
+        "weightBounds": {
+          "minBp": 0,
+          "maxBp": 10000
+        }
+      }
+    ],
+    "weightOrders": [],
+    "limits": {
+      "maxOptions": 32,
+      "maxSamples": 100000,
+      "maxExactScenarios": 10000,
+      "maxWork": 20000000
+    },
+    "recommendation": {
+      "minSoleFirstPpm": 750000,
+      "minLeadPpm": 100000,
+      "maxExpectedRegretBp": 2000,
+      "requireValidatedModels": true
+    }
+  },
+  "context": {
+    "profileVersion": "comparison/0.1.0-draft.1",
+    "kind": "evaluation-context",
+    "id": "fictional-device-evidence",
+    "kitDigest": "21a2bf64fd05d9f2d6d8b3682e108e8df88e0a877723882978f5a050f5f5102c",
+    "options": [
+      {
+        "id": "A",
+        "label": "Fictional device A",
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "406160283943b1d190c5ef9400ea03af2a3cf4e3a427f25bf2f1181945e37d98"
+          }
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Fictional device B",
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "95c553339f881741abad1ea6d349bf45e11e8d7b6323a45521e0a55829a427f0"
+          }
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Fictional device C",
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "545e2b2be82640f2773f61b3b3de4a1045e96d870f4012280592d60cf0ddff28"
+          }
+        ]
+      }
+    ]
+  },
+  "assessments": {
+    "profileVersion": "comparison/0.1.0-draft.1",
+    "kind": "assessment-set",
+    "contextDigest": "a1b0ad41e8978f35dfd65b26cff734915eb5e0ba21037ae0250b4326235f393c",
+    "assessments": [
+      {
+        "optionId": "A",
+        "criterionId": "eligible",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "406160283943b1d190c5ef9400ea03af2a3cf4e3a427f25bf2f1181945e37d98"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": true,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "A",
+        "criterionId": "price",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "406160283943b1d190c5ef9400ea03af2a3cf4e3a427f25bf2f1181945e37d98"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": 200,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "A",
+        "criterionId": "fit",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "406160283943b1d190c5ef9400ea03af2a3cf4e3a427f25bf2f1181945e37d98"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "high",
+            "value": "high",
+            "massPpm": 800000
+          },
+          {
+            "id": "low",
+            "value": "low",
+            "massPpm": 200000
+          }
+        ]
+      },
+      {
+        "optionId": "B",
+        "criterionId": "eligible",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "95c553339f881741abad1ea6d349bf45e11e8d7b6323a45521e0a55829a427f0"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": true,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "B",
+        "criterionId": "price",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "95c553339f881741abad1ea6d349bf45e11e8d7b6323a45521e0a55829a427f0"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": 500,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "B",
+        "criterionId": "fit",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "95c553339f881741abad1ea6d349bf45e11e8d7b6323a45521e0a55829a427f0"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "high",
+            "value": "high",
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "C",
+        "criterionId": "eligible",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "545e2b2be82640f2773f61b3b3de4a1045e96d870f4012280592d60cf0ddff28"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": false,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "C",
+        "criterionId": "price",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "545e2b2be82640f2773f61b3b3de4a1045e96d870f4012280592d60cf0ddff28"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "observed",
+            "value": 500,
+            "massPpm": 1000000
+          }
+        ]
+      },
+      {
+        "optionId": "C",
+        "criterionId": "fit",
+        "evaluator": {
+          "kind": "measurement",
+          "id": "fixture",
+          "methodVersion": "v1"
+        },
+        "evidence": [
+          {
+            "slotId": "specification",
+            "digest": "545e2b2be82640f2773f61b3b3de4a1045e96d870f4012280592d60cf0ddff28"
+          }
+        ],
+        "status": "ok",
+        "calibration": {
+          "status": "unvalidated"
+        },
+        "outcomes": [
+          {
+            "id": "high",
+            "value": "high",
+            "massPpm": 1000000
+          }
+        ]
+      }
+    ]
+  },
+  "request": {
+    "profileVersion": "comparison/0.1.0-draft.1",
+    "kind": "comparison-request",
+    "id": "fictional-comparison",
+    "contextDigest": "a1b0ad41e8978f35dfd65b26cff734915eb5e0ba21037ae0250b4326235f393c",
+    "assessmentDigest": "91a2cd3e0c79b82e84b94d79b21c2d3c46df9a195b5740e3cbe8b7fa7d9631d9",
+    "weights": [
+      {
+        "id": "balanced",
+        "massPpm": 1000000,
+        "weights": [
+          {
+            "criterionId": "price",
+            "weightBp": 5000
+          },
+          {
+            "criterionId": "fit",
+            "weightBp": 5000
+          }
+        ]
+      }
+    ],
+    "dependence": {
+      "kind": "independent",
+      "justification": "Fictional fixture has only one uncertain cell"
+    },
+    "computation": {
+      "mode": "exact"
+    }
+  }
+}
