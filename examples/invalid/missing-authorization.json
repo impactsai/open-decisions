@@ -1,0 +1,241 @@
+{
+  "specVersion": "0.1.0-draft.1",
+  "protocol": {
+    "id": "urn:example:protocol:pay",
+    "version": "1",
+    "title": "Fictional pay",
+    "purpose": "Demonstrate interoperable records without live actions.",
+    "criteria": [
+      {
+        "id": "completion",
+        "label": "completion",
+        "question": "What is the declared completion result?",
+        "role": "requirement",
+        "valueType": "probability",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      {
+        "id": "supervisor",
+        "label": "supervisor",
+        "question": "What is the declared supervisor result?",
+        "role": "requirement",
+        "valueType": "boolean",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      }
+    ],
+    "method": {
+      "id": "threshold-gates-v1",
+      "gates": [
+        {
+          "criterionId": "completion",
+          "acceptMinBp": 9500,
+          "rejectMaxBp": 2000
+        },
+        {
+          "criterionId": "supervisor",
+          "acceptMinBp": 10000,
+          "rejectMaxBp": 0
+        }
+      ]
+    },
+    "authority": {
+      "determiner": "urn:example:decision-service",
+      "basis": {
+        "id": "urn:example:authority:terms",
+        "digest": "sha256:7a7bd8b52b4a93e4713868de30e9d503a9dacf9f7e62c0562834f20ba590fd87"
+      },
+      "reviewContact": "https://example.org/review"
+    },
+    "evidencePolicy": {
+      "description": "Retain the synthetic input used by these fixtures.",
+      "requiredEvidenceIds": [
+        "urn:example:evidence:fixture"
+      ]
+    }
+  },
+  "request": {
+    "id": "urn:example:request:pay",
+    "protocolRef": {
+      "id": "urn:example:protocol:pay",
+      "digest": "sha256:9250bc960b4958cb6eaa42e4dfbd8dcce4e8eda3029b6dd4b699c550477e4dbe"
+    },
+    "createdAt": "2026-09-20T12:00:00Z",
+    "purpose": "Demonstrate interoperable records without live actions.",
+    "mode": "simulation",
+    "disclosures": [],
+    "options": [
+      {
+        "id": "claim",
+        "label": "Fictional work claim"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "urn:example:evidence:fixture",
+        "digest": "sha256:a49d0f983403d6a169a4a2705424924e89e7c3eee7e10afe8a4229ba1bd67240",
+        "mediaType": "application/json",
+        "source": "urn:example:local-file:examples/evidence/fixture.json",
+        "observedAt": "2026-09-20T11:00:00Z",
+        "expiresAt": "2026-09-21T12:00:00Z",
+        "access": "public",
+        "description": "Synthetic test evidence only; not an attestation of real events."
+      }
+    ],
+    "scenarios": [
+      {
+        "id": "base",
+        "massBp": 10000,
+        "weights": []
+      }
+    ],
+    "contextPolicy": {
+      "basis": "Synthetic public fixture with no personal context.",
+      "allowedRecipients": [
+        "urn:example:decision-service",
+        "urn:example:evaluator"
+      ],
+      "retentionUntil": "2026-10-20T12:00:00Z"
+    }
+  },
+  "evaluations": [
+    {
+      "id": "urn:example:evaluation:pay:base:claim:completion",
+      "requestRef": {
+        "id": "urn:example:request:pay",
+        "digest": "sha256:e4b85b856d21ae7ba4ba57deec0b22bb4fcbae8f6bae956fa5cde5c82ba15946"
+      },
+      "scenarioId": "base",
+      "optionId": "claim",
+      "criterionId": "completion",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "probability",
+        "probabilityBp": 9800,
+        "calibration": {
+          "status": "uncalibrated"
+        }
+      }
+    },
+    {
+      "id": "urn:example:evaluation:pay:base:claim:supervisor",
+      "requestRef": {
+        "id": "urn:example:request:pay",
+        "digest": "sha256:e4b85b856d21ae7ba4ba57deec0b22bb4fcbae8f6bae956fa5cde5c82ba15946"
+      },
+      "scenarioId": "base",
+      "optionId": "claim",
+      "criterionId": "supervisor",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    }
+  ],
+  "decision": {
+    "id": "urn:example:decision:pay",
+    "issuer": "urn:example:decision-service",
+    "createdAt": "2026-09-20T12:02:00Z",
+    "expiresAt": "2026-09-21T12:00:00Z",
+    "inputDigest": "sha256:68aa7bf2804599d5f0038165e2efe7f041d8e87516bbd3cefab15426221a4ab3",
+    "result": {
+      "outcome": "eligible",
+      "reasons": [
+        "requirements_met"
+      ],
+      "selectedOptionId": "claim"
+    }
+  },
+  "integrity": {
+    "algorithm": "sha-256-jcs",
+    "digest": "sha256:d26fc3dbff44ba04ac482acc1672067e69925eeda38109a2786a42a198a19e3e"
+  },
+  "action": {
+    "id": "urn:example:action:pay",
+    "decisionRef": {
+      "id": "urn:example:decision:pay",
+      "digest": "sha256:0502442074214f2935df2c834da0e3ed36acafaece92a91252aad6ce1f7aef7c"
+    },
+    "mode": "simulation",
+    "optionId": "claim",
+    "type": "urn:example:action-type:payment",
+    "parameters": {
+      "currency": "USD",
+      "amountMinor": "2000",
+      "beneficiary": "urn:example:beneficiary:fictional"
+    },
+    "executor": "urn:example:simulator",
+    "createdAt": "2026-09-20T12:03:00Z",
+    "expiresAt": "2026-09-21T12:00:00Z",
+    "idempotencyKey": "fictional-pay-001"
+  },
+  "execution": {
+    "id": "urn:example:execution:pay",
+    "actionRef": {
+      "id": "urn:example:action:pay",
+      "digest": "sha256:d7e1796e74439713ce84c451219b0e5ee8f640fe9d0215a6aef78bf8e167fff2"
+    },
+    "authorizationRef": {
+      "id": "urn:example:authorization:pay",
+      "digest": "sha256:cd6b3bb0ca9349411101f6b1191540f155022698f1fa4457acff5dd4f016a9e4"
+    },
+    "executor": "urn:example:simulator",
+    "mode": "simulation",
+    "startedAt": "2026-09-20T12:05:00Z",
+    "completedAt": "2026-09-20T12:06:00Z",
+    "status": "succeeded",
+    "externalRef": {
+      "id": "urn:example:simulation:execution",
+      "digest": "sha256:4b3d969985468b0bedf7cd6f4e796dfe2a8e08d226fe596ca9eb822ba84505cb"
+    }
+  },
+  "settlement": {
+    "id": "urn:example:settlement:pay",
+    "executionRef": {
+      "id": "urn:example:execution:pay",
+      "digest": "sha256:50f038bacd1cca3a230027cf24acd86586b5919725bc36d806952d36f4898628"
+    },
+    "issuer": "urn:example:simulator",
+    "mode": "simulation",
+    "observedAt": "2026-09-20T12:07:00Z",
+    "status": "settled",
+    "externalRef": {
+      "id": "urn:example:simulation:settlement",
+      "digest": "sha256:7068732588029d85e28ece487a0f3105b43fe7c97c9091f6498b0c642d5d5fbc"
+    }
+  }
+}
