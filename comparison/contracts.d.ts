@@ -58,7 +58,7 @@ export class ComparisonError extends Error { code: string; constructor(code: str
 export function canonicalJSON(value: unknown): string;
 export function parseComparisonJSON(text: string): unknown;
 export function digest(value: unknown): Promise<Digest>;
-export function validateShape(name: 'kit' | 'context' | 'assessments' | 'manifest' | 'request' | 'bundle', value: unknown): unknown;
+export function validateShape(name: 'kit' | 'context' | 'assessments' | 'manifest' | 'request' | 'bundle' | 'result', value: unknown): unknown;
 export function validateKit(value: unknown): ComparisonKit;
 export function manifestOf(value: unknown): Promise<ComparisonManifest>;
 export function validateManifest(value: unknown, expectedKitDigest: Digest): ComparisonManifest;

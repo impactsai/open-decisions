@@ -1,7 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { compare, digest } from '../comparison/index.mjs';
+import { compare as compute, digest, validateShape } from '../comparison/index.mjs';
+
+// Every successful and failed-dependency result must obey the normative output shape.
+async function compare(b) {
+  const result = await compute(b);
+  validateShape('result', result);
+  return result;
+}
 
 const fixture = () => JSON.parse(readFileSync(new URL('../examples/comparison/fictional-buy.json', import.meta.url)));
 const num = r => Number(r.numerator) / Number(r.denominator);
@@ -74,6 +81,18 @@ test('hard constraint eligibility precedes ranking and retains an all-failed out
   at(b, 'B', 'eligible').outcomes[0].value = false;
   const none = await compare(await rebind(b));
   assert.equal(none.outcome, 'no-eligible-option'); assert.equal(none.rankings, undefined);
+});
+
+test('three-way competition ranks skip rank two when two options tie for first', async () => {
+  const b = fixture();
+  at(b, 'C', 'eligible').outcomes[0].value = true;
+  at(b, 'A', 'price').outcomes[0].value = 500;
+  at(b, 'A', 'fit').outcomes = structuredClone(at(b, 'B', 'fit').outcomes);
+  at(b, 'C', 'price').outcomes[0].value = 1000;
+  const r = await compare(await rebind(b));
+  assert.equal(num(r.tieSupport), 1);
+  assert.equal(num(r.rankings[2].rankSupport[2].support), 1);
+  assert.equal(num(r.rankings[2].rankSupport[1].support), 0);
 });
 
 test('constraint threshold is inclusive and cannot be compensated by price utility', async () => {

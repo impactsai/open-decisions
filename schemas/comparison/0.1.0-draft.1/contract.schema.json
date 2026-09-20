@@ -1034,6 +1034,356 @@
           "$ref": "#/$defs/request"
         }
       }
+    },
+    "ratio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "properties": {
+        "numerator": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,8191})$"
+        },
+        "denominator": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,8191}$"
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileVersion",
+        "kind",
+        "method",
+        "requestId",
+        "interpretation",
+        "inputs",
+        "outcome",
+        "issues"
+      ],
+      "properties": {
+        "profileVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "kind": {
+          "const": "comparison-result"
+        },
+        "method": {
+          "$ref": "#/$defs/method"
+        },
+        "requestId": {
+          "$ref": "#/$defs/id"
+        },
+        "interpretation": {
+          "const": "model-conditional-scenario-support"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kitDigest",
+            "contextDigest",
+            "assessmentDigest",
+            "requestDigest"
+          ],
+          "properties": {
+            "kitDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "contextDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "assessmentDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "requestDigest": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        },
+        "outcome": {
+          "enum": [
+            "recommended",
+            "review-required",
+            "needs-information",
+            "no-eligible-option",
+            "no-robust-winner"
+          ]
+        },
+        "selectedOptionId": {
+          "$ref": "#/$defs/id"
+        },
+        "excludedOptionIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "maxItems": 32
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "optionId",
+              "criterionId",
+              "code"
+            ],
+            "properties": {
+              "optionId": {
+                "$ref": "#/$defs/id"
+              },
+              "criterionId": {
+                "$ref": "#/$defs/id"
+              },
+              "code": {
+                "enum": [
+                  "error",
+                  "unavailable",
+                  "unvalidated-model"
+                ]
+              },
+              "detail": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          },
+          "maxItems": 1024
+        },
+        "computation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "algorithm",
+            "seedMaterialDigest",
+            "processedScenarios",
+            "samplingError"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "exact",
+                "monte-carlo"
+              ]
+            },
+            "algorithm": {
+              "enum": [
+                "finite-exact-v1",
+                "xoshiro128ss-v1"
+              ]
+            },
+            "seedMaterialDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "processedScenarios": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000
+            },
+            "samplingError": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "confidencePpm",
+                "simultaneousSupportAndRegretErrorPpm"
+              ],
+              "properties": {
+                "confidencePpm": {
+                  "const": 950000
+                },
+                "simultaneousSupportAndRegretErrorPpm": {
+                  "$ref": "#/$defs/ppm"
+                }
+              }
+            }
+          }
+        },
+        "tieSupport": {
+          "$ref": "#/$defs/ratio"
+        },
+        "rankings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "optionId",
+              "soleFirstSupport",
+              "rankSupport",
+              "expectedUtilityBp",
+              "expectedRegretBp"
+            ],
+            "properties": {
+              "optionId": {
+                "$ref": "#/$defs/id"
+              },
+              "soleFirstSupport": {
+                "$ref": "#/$defs/ratio"
+              },
+              "rankSupport": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "rank",
+                    "support"
+                  ],
+                  "properties": {
+                    "rank": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 32
+                    },
+                    "support": {
+                      "$ref": "#/$defs/ratio"
+                    }
+                  }
+                },
+                "maxItems": 32
+              },
+              "expectedUtilityBp": {
+                "$ref": "#/$defs/ratio"
+              },
+              "expectedRegretBp": {
+                "$ref": "#/$defs/ratio"
+              }
+            }
+          },
+          "maxItems": 32
+        },
+        "pairwise": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "optionA",
+              "optionB",
+              "aWins",
+              "bWins",
+              "tie"
+            ],
+            "properties": {
+              "optionA": {
+                "$ref": "#/$defs/id"
+              },
+              "optionB": {
+                "$ref": "#/$defs/id"
+              },
+              "aWins": {
+                "$ref": "#/$defs/ratio"
+              },
+              "bWins": {
+                "$ref": "#/$defs/ratio"
+              },
+              "tie": {
+                "$ref": "#/$defs/ratio"
+              }
+            }
+          },
+          "maxItems": 496
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "recommended"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "selectedOptionId",
+              "computation"
+            ],
+            "properties": {
+              "selectedOptionId": {},
+              "computation": {}
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "selectedOptionId"
+              ],
+              "properties": {
+                "selectedOptionId": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "computation"
+            ],
+            "properties": {
+              "computation": {}
+            }
+          },
+          "then": {
+            "required": [
+              "rankings",
+              "pairwise",
+              "tieSupport",
+              "excludedOptionIds"
+            ],
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "recommended",
+                  "review-required",
+                  "no-robust-winner"
+                ]
+              },
+              "rankings": {},
+              "pairwise": {},
+              "tieSupport": {},
+              "excludedOptionIds": {}
+            }
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "rankings"
+                  ],
+                  "properties": {
+                    "rankings": {}
+                  }
+                },
+                {
+                  "required": [
+                    "pairwise"
+                  ],
+                  "properties": {
+                    "pairwise": {}
+                  }
+                },
+                {
+                  "required": [
+                    "tieSupport"
+                  ],
+                  "properties": {
+                    "tieSupport": {}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
     }
   },
   "oneOf": [
@@ -1054,6 +1404,9 @@
     },
     {
       "$ref": "#/$defs/bundle"
+    },
+    {
+      "$ref": "#/$defs/result"
     }
   ]
 }
