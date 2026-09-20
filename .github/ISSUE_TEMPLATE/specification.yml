@@ -1,0 +1,25 @@
+name: Specification question or change
+description: Propose a clarification, find a conflict, or improve interoperability.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and affected version
+      description: Describe the concrete record or interpretation that fails.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Example and expected behavior
+      description: Use synthetic data. Include competing interpretations where useful.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change, alternatives, and trust implications
+  - type: textarea
+    id: interests
+    attributes:
+      label: Relevant implementation and affiliations

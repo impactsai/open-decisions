@@ -1,0 +1,32 @@
+{
+  "valid": [
+    "valid/pay-simulation.json",
+    "valid/pay-missing-evidence.json",
+    "valid/pay-provider-error.json",
+    "valid/pay-not-eligible.json",
+    "valid/buy-before-clarification.json",
+    "valid/buy-after-clarification.json"
+  ],
+  "invalid": [
+    {
+      "file": "invalid/mixed-simulation-live.json",
+      "expectedCode": "mode_mismatch"
+    },
+    {
+      "file": "invalid/missing-authorization.json",
+      "expectedCode": "authorization_required"
+    },
+    {
+      "file": "invalid/forged-recommendation.json",
+      "expectedCode": "replay_mismatch"
+    },
+    {
+      "file": "invalid/invalid-scenario-mass.json",
+      "expectedCode": "scenario_mass"
+    },
+    {
+      "file": "invalid/tampered-protocol.json",
+      "expectedCode": "reference_mismatch"
+    }
+  ]
+}

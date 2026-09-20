@@ -1,0 +1,20 @@
+{
+  "name": "open-decisions",
+  "version": "0.1.0-draft.1",
+  "private": true,
+  "description": "A community draft for portable, evidence-based decision records",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node tools/validate.mjs",
+    "examples": "node tools/check-examples.mjs",
+    "check": "npm test && npm run examples && node tools/check-docs.mjs"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "canonicalize": "5.1.0"
+  },
+  "license": "MIT"
+}

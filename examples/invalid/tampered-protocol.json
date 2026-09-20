@@ -1,0 +1,515 @@
+{
+  "specVersion": "0.1.0-draft.1",
+  "protocol": {
+    "id": "urn:example:protocol:buy",
+    "version": "1",
+    "title": "Fictional buy",
+    "purpose": "Tampered after hashing",
+    "criteria": [
+      {
+        "id": "battery",
+        "label": "battery",
+        "question": "What is the declared battery result?",
+        "role": "preference",
+        "valueType": "utility",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      {
+        "id": "repair",
+        "label": "repair",
+        "question": "What is the declared repair result?",
+        "role": "preference",
+        "valueType": "utility",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      {
+        "id": "budget",
+        "label": "budget",
+        "question": "What is the declared budget result?",
+        "role": "constraint",
+        "valueType": "boolean",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      }
+    ],
+    "method": {
+      "id": "weighted-scenarios-v1",
+      "minimumTopShareBp": 7500,
+      "minimumLeadBp": 2000
+    },
+    "authority": {
+      "determiner": "urn:example:decision-service",
+      "basis": {
+        "id": "urn:example:authority:terms",
+        "digest": "sha256:7a7bd8b52b4a93e4713868de30e9d503a9dacf9f7e62c0562834f20ba590fd87"
+      },
+      "reviewContact": "https://example.org/review"
+    },
+    "evidencePolicy": {
+      "description": "Retain the synthetic input used by these fixtures.",
+      "requiredEvidenceIds": [
+        "urn:example:evidence:fixture"
+      ]
+    }
+  },
+  "request": {
+    "id": "urn:example:request:buy-after",
+    "protocolRef": {
+      "id": "urn:example:protocol:buy",
+      "digest": "sha256:d8c31e4271f42200449dfcba3c0ece464c53a095309a62c430cc41bef2757f6a"
+    },
+    "createdAt": "2026-09-20T12:00:00Z",
+    "purpose": "Demonstrate interoperable records without live actions.",
+    "mode": "simulation",
+    "disclosures": [],
+    "options": [
+      {
+        "id": "repairable",
+        "label": "Fictional repairable laptop"
+      },
+      {
+        "id": "endurance",
+        "label": "Fictional long-battery laptop"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "urn:example:evidence:fixture",
+        "digest": "sha256:a49d0f983403d6a169a4a2705424924e89e7c3eee7e10afe8a4229ba1bd67240",
+        "mediaType": "application/json",
+        "source": "urn:example:local-file:examples/evidence/fixture.json",
+        "observedAt": "2026-09-20T11:00:00Z",
+        "expiresAt": "2026-09-21T12:00:00Z",
+        "access": "public",
+        "description": "Synthetic test evidence only; not an attestation of real events."
+      }
+    ],
+    "scenarios": [
+      {
+        "id": "repair-first",
+        "massBp": 7900,
+        "weights": [
+          {
+            "criterionId": "battery",
+            "weightBp": 3000
+          },
+          {
+            "criterionId": "repair",
+            "weightBp": 7000
+          }
+        ]
+      },
+      {
+        "id": "battery-first",
+        "massBp": 2100,
+        "weights": [
+          {
+            "criterionId": "battery",
+            "weightBp": 8000
+          },
+          {
+            "criterionId": "repair",
+            "weightBp": 2000
+          }
+        ]
+      }
+    ],
+    "contextPolicy": {
+      "basis": "Synthetic public fixture with no personal context.",
+      "allowedRecipients": [
+        "urn:example:decision-service",
+        "urn:example:evaluator"
+      ],
+      "retentionUntil": "2026-10-20T12:00:00Z"
+    },
+    "supersedes": {
+      "id": "urn:example:request:buy-before",
+      "digest": "sha256:434cdafae24788d3b2ab118f9dd1619f6f3adb4617423429ec656844aad480e0"
+    }
+  },
+  "evaluations": [
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:repairable:battery",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "repairable",
+      "criterionId": "battery",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 5000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:repairable:repair",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "repairable",
+      "criterionId": "repair",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 10000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:repairable:budget",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "repairable",
+      "criterionId": "budget",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:endurance:battery",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "endurance",
+      "criterionId": "battery",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 9000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:endurance:repair",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "endurance",
+      "criterionId": "repair",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 3000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:repair-first:endurance:budget",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "repair-first",
+      "optionId": "endurance",
+      "criterionId": "budget",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:repairable:battery",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "repairable",
+      "criterionId": "battery",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 5000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:repairable:repair",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "repairable",
+      "criterionId": "repair",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 10000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:repairable:budget",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "repairable",
+      "criterionId": "budget",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:endurance:battery",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "endurance",
+      "criterionId": "battery",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 9000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:endurance:repair",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "endurance",
+      "criterionId": "repair",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "utility",
+        "utilityBp": 3000
+      }
+    },
+    {
+      "id": "urn:example:evaluation:buy-after:battery-first:endurance:budget",
+      "requestRef": {
+        "id": "urn:example:request:buy-after",
+        "digest": "sha256:07a80ab7cc197d5deb9f364d80c65c8914ac2c458886fc2c7eaf2c3b8ab66042"
+      },
+      "scenarioId": "battery-first",
+      "optionId": "endurance",
+      "criterionId": "budget",
+      "evidenceIds": [
+        "urn:example:evidence:fixture"
+      ],
+      "evaluator": {
+        "id": "urn:example:evaluator",
+        "kind": "deterministic",
+        "method": {
+          "id": "urn:example:method:fixture",
+          "version": "1",
+          "digest": "sha256:0f50c8ca450e883054aeb58b4a1d6d30fe659d22180144d6918a07c1f1cbca12"
+        }
+      },
+      "completedAt": "2026-09-20T12:01:00Z",
+      "status": "complete",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    }
+  ],
+  "decision": {
+    "id": "urn:example:decision:buy-after",
+    "issuer": "urn:example:decision-service",
+    "createdAt": "2026-09-20T12:02:00Z",
+    "expiresAt": "2026-09-21T12:00:00Z",
+    "inputDigest": "sha256:cf151bf9f96490ccc3ef01922da7f7ebde7748ab777e9a4bc56cdda8dcf49925",
+    "result": {
+      "outcome": "recommended",
+      "reasons": [
+        "scenario_support_met"
+      ],
+      "selectedOptionId": "repairable",
+      "rankings": [
+        {
+          "optionId": "repairable",
+          "soleFirstMassBp": 7900,
+          "meanUtilityBp": 7975
+        },
+        {
+          "optionId": "endurance",
+          "soleFirstMassBp": 2100,
+          "meanUtilityBp": 5430
+        }
+      ],
+      "tieMassBp": 0,
+      "excludedOptionIds": []
+    },
+    "supersedes": {
+      "id": "urn:example:decision:buy-before",
+      "digest": "sha256:41631f8d4ec2df55174279455c185636d999aa3f97aaec87e28fb9a5acf45e32"
+    }
+  },
+  "integrity": {
+    "algorithm": "sha-256-jcs",
+    "digest": "sha256:15cf4b9ee63598c5b305bc97f9e70a7324d277cf46b9414853b7e1c5450c5eb1"
+  }
+}
