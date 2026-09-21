@@ -45,7 +45,12 @@ by Open Decisions, and neither alone proves authentic or adequate evidence. UCAN
 or another capability mechanism can establish external scoped authority, but the
 core's authorization record is not itself a UCAN. Credential, signature, chain,
 and settlement verification remain the integrating runtime's responsibility.
-There is no asserted UDID or IXO credential-format compatibility in this draft.
+The optional [UDID v2 profile](../spec/udid/2.0.0-draft.1/core.md) defines processed
+JSON records and a proposed extension declaration. It has its own explicit draft
+selection, schema and local checker; it is not a conversion from core records or
+an assertion of compatibility with existing signed IXO credentials. Digest and
+disclosure semantics remain open for review in
+[RFC 0005](../rfcs/0005-udid-v2-schema-and-vectors.md).
 
 ## Consumer agents and Muse
 

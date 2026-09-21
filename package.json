@@ -10,8 +10,10 @@
   "scripts": {
     "test": "node --test",
     "validate": "node tools/validate.mjs",
+    "validate:udid": "node tools/validate-udid.mjs",
+    "udid:examples": "node tools/check-udid-examples.mjs",
     "examples": "node tools/check-examples.mjs",
-    "check": "npm test && npm run examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check && node tools/build-evals-validators.mjs --check && node tools/validate-evals.mjs examples/decision-evals/fictional-kit.json && node tools/build-evals-types.mjs --check",
+    "check": "npm test && npm run examples && npm run udid:examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check && node tools/build-evals-validators.mjs --check && node tools/validate-evals.mjs examples/decision-evals/fictional-kit.json && node tools/build-evals-types.mjs --check",
     "comparison:generate": "node tools/build-comparison-validators.mjs",
     "evals:generate": "node tools/build-evals-validators.mjs && node tools/build-evals-types.mjs",
     "evals:validate": "node tools/validate-evals.mjs"
@@ -23,6 +25,9 @@
   },
   "license": "MIT",
   "exports": {
+    "./udid": "./udid/index.mjs",
+    "./udid/schema": "./schemas/udid/2.0.0-draft.1/processed-claim-set.schema.json",
+    "./udid/info-schema": "./schemas/udid/2.0.0-draft.1/udid-info.schema.json",
     "./comparison": {
       "types": "./comparison/index.d.ts",
       "default": "./comparison/index.mjs"
@@ -41,6 +46,8 @@
   "files": [
     "comparison",
     "evals",
+    "udid",
+    "tools/json.mjs",
     "schemas",
     "spec",
     "examples",

@@ -1,0 +1,1018 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/impactsai/open-decisions/main/schemas/udid/2.0.0-draft.1/processed-claim-set.schema.json",
+  "title": "UDID v2 processed claim set — Open Decisions 2.0.0-draft.1",
+  "description": "Optional community draft profile. Validates disclosed JSON shape, not signatures, authority, decision digest, or settlement. See the accompanying specification and unresolved digest questions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "iss",
+    "jti",
+    "iat",
+    "vct",
+    "dig",
+    "sub",
+    "dec",
+    "act",
+    "rub",
+    "aut"
+  ],
+  "properties": {
+    "iss": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^did:[a-z0-9]+:[^\\s/?#]+(?![\\s\\S])"
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^urn:udid:[0-7][0-9A-HJKMNP-TV-Z]{25}(?![\\s\\S])"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "nbf": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "vct": {
+      "const": "https://ixo.world/udid/v2"
+    },
+    "vct#integrity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dig": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "sub": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aud": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "cnf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jwk"
+      ],
+      "properties": {
+        "jwk": {
+          "$ref": "#/$defs/publicJwk"
+        }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status_list"
+      ],
+      "properties": {
+        "status_list": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "idx",
+            "uri"
+          ],
+          "properties": {
+            "idx": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "uri": {
+              "type": "string",
+              "minLength": 1,
+              "format": "uri"
+            }
+          }
+        }
+      }
+    },
+    "dec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "outcome",
+        "reasons"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "DecisionToPay",
+            "DecisionToBuy"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "rejected",
+            "manual_review_required",
+            "partial_success",
+            "disputed"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reviewed": {
+          "type": "boolean"
+        },
+        "reviewLevel": {
+          "type": "string",
+          "enum": [
+            "none",
+            "sampled",
+            "escalated"
+          ]
+        }
+      }
+    },
+    "act": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "validUntil"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "purchase",
+            "payout",
+            "release",
+            "channel"
+          ]
+        },
+        "pay": {
+          "$ref": "#/$defs/leg"
+        },
+        "legs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/leg"
+              },
+              {
+                "required": [
+                  "id",
+                  "role"
+                ]
+              }
+            ]
+          },
+          "minItems": 1
+        },
+        "resource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "urlHash"
+          ],
+          "properties": {
+            "urlHash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "pay"
+          ],
+          "not": {
+            "required": [
+              "legs"
+            ]
+          }
+        },
+        {
+          "required": [
+            "legs"
+          ],
+          "not": {
+            "required": [
+              "pay"
+            ]
+          }
+        }
+      ]
+    },
+    "rub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "cid"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "blueprint": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        }
+      }
+    },
+    "aut": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocation",
+        "delegationRoot",
+        "cmd",
+        "policyDigest"
+      ],
+      "properties": {
+        "principal": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        },
+        "invocation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "delegationRoot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cmd": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policyDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "evl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "oracles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "did",
+              "version"
+            ],
+            "properties": {
+              "did": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^did:[a-z0-9]+:[^\\s/?#]+(?![\\s\\S])"
+              },
+              "model": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "minItems": 0
+        },
+        "reviewers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "trace": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cid",
+            "hash"
+          ],
+          "properties": {
+            "cid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+            }
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "result"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail",
+                  "error",
+                  "unavailable"
+                ]
+              },
+              "score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "evd": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "hash",
+          "accessPolicy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "cid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "accessPolicy": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "clm": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "issuer",
+          "hash"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "issuer": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^did:[a-z0-9]+:[^\\s/?#]+(?![\\s\\S])"
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "lnk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "mandateRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tap": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "keyid",
+            "tag",
+            "created"
+          ],
+          "properties": {
+            "keyid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tag": {
+              "type": "string",
+              "minLength": 1
+            },
+            "created": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "x402": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resourceUrlHash",
+            "acceptedHash"
+          ],
+          "properties": {
+            "resourceUrlHash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+            },
+            "acceptedHash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+            }
+          }
+        },
+        "orderId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invoiceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent": {
+          "type": "string",
+          "pattern": "^urn:udid:[0-7][0-9A-HJKMNP-TV-Z]{25}(?![\\s\\S])"
+        }
+      }
+    },
+    "imp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "quantity",
+        "unit",
+        "methodology"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quantity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "methodology": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        },
+        "period": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "prf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "eip712": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "leg",
+              "chainId",
+              "verifyingContract",
+              "signature"
+            ],
+            "properties": {
+              "leg": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}(?![\\s\\S])"
+              },
+              "chainId": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "verifyingContract": {
+                "type": "string",
+                "pattern": "^0x[0-9a-fA-F]{40}(?![\\s\\S])"
+              },
+              "signature": {
+                "type": "string",
+                "pattern": "^0x[0-9a-fA-F]{130}(?![\\s\\S])"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "stl": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/settlement"
+      },
+      "minItems": 1
+    },
+    "explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  },
+  "oneOf": [
+    {
+      "required": [
+        "exp"
+      ],
+      "not": {
+        "required": [
+          "stl"
+        ]
+      }
+    },
+    {
+      "required": [
+        "stl"
+      ],
+      "not": {
+        "required": [
+          "exp"
+        ]
+      }
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "dec": {
+            "properties": {
+              "type": {
+                "const": "DecisionToBuy"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "dec"
+        ]
+      },
+      "then": {
+        "properties": {
+          "act": {
+            "required": [
+              "pay"
+            ],
+            "properties": {
+              "pay": {
+                "required": [
+                  "payer"
+                ]
+              }
+            }
+          },
+          "aut": {
+            "required": [
+              "agent"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "leg": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme",
+        "network",
+        "asset",
+        "amount",
+        "payTo"
+      ],
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "upto",
+            "auth-capture",
+            "batch-settlement",
+            "payout",
+            "transfer",
+            "charge",
+            "oct",
+            "release"
+          ]
+        },
+        "network": {
+          "type": "string",
+          "pattern": "^[-a-z0-9]{3,8}:[-_a-zA-Z0-9]{1,32}(?![\\s\\S])"
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)(?![\\s\\S])"
+        },
+        "payTo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}(?![\\s\\S])"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "fund",
+            "disburse",
+            "alternative"
+          ]
+        },
+        "group": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}(?![\\s\\S])"
+        },
+        "maxTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "alternative"
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "required": [
+              "group"
+            ]
+          }
+        }
+      ]
+    },
+    "publicJwk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kty",
+        "crv",
+        "x"
+      ],
+      "properties": {
+        "kty": {
+          "type": "string",
+          "enum": [
+            "OKP",
+            "EC"
+          ]
+        },
+        "crv": {
+          "type": "string",
+          "enum": [
+            "Ed25519",
+            "P-256",
+            "secp256k1"
+          ]
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}(?![\\s\\S])"
+        },
+        "y": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}(?![\\s\\S])"
+        },
+        "kid": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "kty": {
+              "const": "OKP"
+            },
+            "crv": {
+              "const": "Ed25519"
+            }
+          },
+          "not": {
+            "required": [
+              "y"
+            ]
+          }
+        },
+        {
+          "properties": {
+            "kty": {
+              "const": "EC"
+            },
+            "crv": {
+              "enum": [
+                "P-256",
+                "secp256k1"
+              ]
+            }
+          },
+          "required": [
+            "y"
+          ]
+        }
+      ]
+    },
+    "settlement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "leg",
+        "rail",
+        "network",
+        "asset",
+        "amount",
+        "payTo",
+        "settledAt",
+        "settler",
+        "proof"
+      ],
+      "properties": {
+        "leg": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}(?![\\s\\S])"
+        },
+        "rail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scheme": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "upto",
+            "auth-capture",
+            "batch-settlement",
+            "payout",
+            "transfer",
+            "charge",
+            "oct",
+            "release"
+          ]
+        },
+        "network": {
+          "type": "string",
+          "pattern": "^[-a-z0-9]{3,8}:[-_a-zA-Z0-9]{1,32}(?![\\s\\S])"
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)(?![\\s\\S])"
+        },
+        "payTo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transaction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "settledAt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "settler": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^did:[a-z0-9]+:[^\\s/?#]+(?![\\s\\S])"
+        },
+        "reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {
+            "upstream": {
+              "type": "string",
+              "minLength": 1
+            },
+            "orderId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stripe": {
+              "type": "string",
+              "minLength": 1
+            },
+            "visa": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "proof": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "jws"
+          ],
+          "properties": {
+            "jws": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+\\.\\.[A-Za-z0-9_-]+(?![\\s\\S])"
+            }
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "format": "uri"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/extensionValue"
+      }
+    },
+    "extensionValue": {
+      "oneOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extensionValue"
+          },
+          "minItems": 0
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "not": {
+              "enum": [
+                "_sd",
+                "_sd_alg",
+                "..."
+              ]
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/extensionValue"
+          }
+        }
+      ]
+    }
+  }
+}

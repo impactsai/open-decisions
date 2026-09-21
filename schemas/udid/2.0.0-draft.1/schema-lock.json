@@ -1,0 +1,17 @@
+{
+  "profile": "udid/2.0.0-draft.1",
+  "status": "draft-candidate",
+  "hashing": "SHA-256 of exact UTF-8 file bytes, including final newline",
+  "schemas": [
+    {
+      "file": "processed-claim-set.schema.json",
+      "id": "https://raw.githubusercontent.com/impactsai/open-decisions/main/schemas/udid/2.0.0-draft.1/processed-claim-set.schema.json",
+      "sha256": "8dcd2964439bf77ba62bfa85a5c30ea269139c99537f304dfa6d17f1da65e900"
+    },
+    {
+      "file": "udid-info.schema.json",
+      "id": "https://raw.githubusercontent.com/impactsai/open-decisions/main/schemas/udid/2.0.0-draft.1/udid-info.schema.json",
+      "sha256": "e4fd23503afa872f20e9fad73424ddb3699b194bcc86440bbd7b443e55287a7a"
+    }
+  ]
+}

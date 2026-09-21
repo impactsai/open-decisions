@@ -1,0 +1,27 @@
+{
+  "version": "2",
+  "required": true,
+  "decisionType": "DecisionToBuy",
+  "issuers": [
+    "did:web:issuer.example"
+  ],
+  "verifier": "https://verifier.example",
+  "challenge": "v1x1796205590x0123456789abcdef",
+  "kb": true,
+  "bind": [
+    "payTo",
+    "asset",
+    "network",
+    "amount",
+    "resourceUrl",
+    "payer"
+  ],
+  "disclose": [
+    "dec",
+    "act",
+    "rub.id",
+    "lnk.x402"
+  ],
+  "rubric": "urn:example:rubric:connectivity",
+  "decideUrl": "https://issuer.example/decisions"
+}
