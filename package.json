@@ -13,8 +13,10 @@
     "validate:udid": "node tools/validate-udid.mjs",
     "udid:examples": "node tools/check-udid-examples.mjs",
     "examples": "node tools/check-examples.mjs",
-    "check": "npm test && npm run examples && npm run udid:examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check",
-    "comparison:generate": "node tools/build-comparison-validators.mjs"
+    "check": "npm test && npm run examples && npm run udid:examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check && node tools/build-evals-validators.mjs --check && node tools/validate-evals.mjs examples/decision-evals/fictional-kit.json && node tools/build-evals-types.mjs --check",
+    "comparison:generate": "node tools/build-comparison-validators.mjs",
+    "evals:generate": "node tools/build-evals-validators.mjs && node tools/build-evals-types.mjs",
+    "evals:validate": "node tools/validate-evals.mjs"
   },
   "dependencies": {
     "ajv": "8.20.0",
@@ -34,6 +36,26 @@
       "types": "./comparison/contracts.d.ts",
       "default": "./comparison/contracts.mjs"
     },
-    "./comparison/schema": "./schemas/comparison/0.1.0-draft.1/contract.schema.json"
-  }
+    "./comparison/schema": "./schemas/comparison/0.1.0-draft.1/contract.schema.json",
+    "./evals": {
+      "types": "./evals/index.d.ts",
+      "default": "./evals/index.mjs"
+    },
+    "./evals/schema": "./schemas/decision-evals/0.1.0-draft.1/contract.schema.json"
+  },
+  "files": [
+    "comparison",
+    "evals",
+    "udid",
+    "tools/json.mjs",
+    "schemas",
+    "spec",
+    "examples",
+    "rfcs",
+    "docs/decision-evals-implementation.md",
+    "README.md",
+    "GOVERNANCE.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }

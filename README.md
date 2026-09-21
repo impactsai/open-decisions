@@ -12,8 +12,8 @@ applications, evaluators, and decision services exchange the same decision
 without requiring the same model, cloud, identity system, or payment network.
 
 **Status: 0.3.0-draft.1 — community proposal.** The original core remains at
-0.1.0-draft.1; comparison and the optional UDID v2 record profile have their own
-versions. This repository contains a working specification, schemas, examples,
+0.1.0-draft.1; comparison, Decision Evals and the optional UDID v2 record profile
+have their own versions. This repository contains a working specification, schemas, examples,
 and a reference conformance checker.
 It does not claim community adoption, independent implementation, certification,
 or production readiness. Feedback and alternative implementations are welcome.
@@ -102,3 +102,7 @@ clinical validation and professional oversight; this draft supplies neither.
 See the [design decisions](docs/design-decisions.md), [roadmap](ROADMAP.md), and
 [source notes](docs/sources.md). All repository content remains under the
 existing [MIT license](LICENSE).
+
+## Decision Evals draft
+
+[Decision Evals](spec/decision-evals/0.1.0-draft.1/core.md) defines benchmark suites, calibration artifacts, validation reports, `model-card.json`, immutable kit releases and calibration application records. Use `open-decisions/evals` for offline validation and the reference calibration functions. [RFC 0004](rfcs/0004-decision-evals.md), the [implementation plan](docs/decision-evals-implementation.md) and [fictional release](examples/decision-evals/README.md) explain its scope. This independently versioned community draft does not change existing core/comparison contracts or authorize consequential use.

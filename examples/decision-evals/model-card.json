@@ -1,0 +1,49 @@
+{
+  "acceptancePolicy": null,
+  "benchmarkRuns": [
+    "92fac054960eb72317bcb98b270cb0cf1cfd18bb9a70fae7c247972b546c9c5f",
+    "c668eccb806029701a5dbe65d0c4aaf5f3a1c92b0f426f1718c9af8cec71e2c8",
+    "44068609e7ebdc4dc2ff3c01a9abd404f321cace1819673d48c0362c629bfb70"
+  ],
+  "calibrationArtifacts": [
+    "3387aa22975365c4c5d549ac3578f99ee42ca7bd08b4550d4b9dc4dfc6ec1830",
+    "bda57b9bbef1deedfccd60dfd64eb89c20dff7d5a5a97203dc09fdb2411c4542"
+  ],
+  "configurations": [
+    {
+      "artifactDigests": [
+        "3387aa22975365c4c5d549ac3578f99ee42ca7bd08b4550d4b9dc4dfc6ec1830",
+        "bda57b9bbef1deedfccd60dfd64eb89c20dff7d5a5a97203dc09fdb2411c4542"
+      ],
+      "configurationDigest": "cad14780961db9ed2ee967651b97d633d58918283155aba4a13f6070f3561cc9",
+      "permittedModes": [
+        "experimental"
+      ],
+      "reportDigests": [
+        "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+        "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
+      ],
+      "status": "insufficient"
+    }
+  ],
+  "createdAt": "2026-09-21T07:00:00Z",
+  "datasets": [
+    "d3ebdd4efdae3f97a6b3be06d665e2a859c22610315878fae4d2dcaa3e488b24"
+  ],
+  "evaluationSubjectDigest": "b244b95170ec031b85b9f64e14dfbd41ef52a8178d3881ac0250cad2e916a6fa",
+  "intendedUse": "Illustrate protocol conformance without making real decisions.",
+  "kind": "model-card",
+  "kit": {
+    "id": "urn:example:dtp",
+    "version": "1.0.0-experimental.1"
+  },
+  "limitations": [
+    "Synthetic examples are not calibration evidence for real populations."
+  ],
+  "specVersion": "decision-evals/0.1.0-draft.1",
+  "validUntil": "2026-12-21T00:00:00Z",
+  "validationReports": [
+    "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+    "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
+  ]
+}
