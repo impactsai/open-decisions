@@ -1,0 +1,115 @@
+{
+  "profileVersion": "comparison/0.1.0-draft.1",
+  "kind": "comparison-result",
+  "method": "smaa-weighted-sum-v1",
+  "requestId": "fictional-comparison",
+  "interpretation": "model-conditional-scenario-support",
+  "inputs": {
+    "kitDigest": "21a2bf64fd05d9f2d6d8b3682e108e8df88e0a877723882978f5a050f5f5102c",
+    "contextDigest": "a1b0ad41e8978f35dfd65b26cff734915eb5e0ba21037ae0250b4326235f393c",
+    "assessmentDigest": "91a2cd3e0c79b82e84b94d79b21c2d3c46df9a195b5740e3cbe8b7fa7d9631d9",
+    "requestDigest": "859f0fa195e58723c35d5ab1b9e53498441edd66320fa6111ac97d0084459a15"
+  },
+  "outcome": "recommended",
+  "selectedOptionId": "A",
+  "excludedOptionIds": [
+    "C"
+  ],
+  "issues": [],
+  "computation": {
+    "mode": "exact",
+    "algorithm": "finite-exact-v1",
+    "seedMaterialDigest": "d320950d1e4aced6128543c49ab230564aad9ebd0fc28b16a255882e8c6435fd",
+    "processedScenarios": 2,
+    "samplingError": {
+      "confidencePpm": 950000,
+      "simultaneousSupportAndRegretErrorPpm": 0
+    }
+  },
+  "tieSupport": {
+    "numerator": "0",
+    "denominator": "1"
+  },
+  "rankings": [
+    {
+      "optionId": "A",
+      "soleFirstSupport": {
+        "numerator": "4",
+        "denominator": "5"
+      },
+      "rankSupport": [
+        {
+          "rank": 1,
+          "support": {
+            "numerator": "4",
+            "denominator": "5"
+          }
+        },
+        {
+          "rank": 2,
+          "support": {
+            "numerator": "1",
+            "denominator": "5"
+          }
+        }
+      ],
+      "expectedUtilityBp": {
+        "numerator": "8000",
+        "denominator": "1"
+      },
+      "expectedRegretBp": {
+        "numerator": "700",
+        "denominator": "1"
+      }
+    },
+    {
+      "optionId": "B",
+      "soleFirstSupport": {
+        "numerator": "1",
+        "denominator": "5"
+      },
+      "rankSupport": [
+        {
+          "rank": 1,
+          "support": {
+            "numerator": "1",
+            "denominator": "5"
+          }
+        },
+        {
+          "rank": 2,
+          "support": {
+            "numerator": "4",
+            "denominator": "5"
+          }
+        }
+      ],
+      "expectedUtilityBp": {
+        "numerator": "7500",
+        "denominator": "1"
+      },
+      "expectedRegretBp": {
+        "numerator": "1200",
+        "denominator": "1"
+      }
+    }
+  ],
+  "pairwise": [
+    {
+      "optionA": "A",
+      "optionB": "B",
+      "aWins": {
+        "numerator": "4",
+        "denominator": "5"
+      },
+      "bWins": {
+        "numerator": "1",
+        "denominator": "5"
+      },
+      "tie": {
+        "numerator": "0",
+        "denominator": "1"
+      }
+    }
+  ]
+}
