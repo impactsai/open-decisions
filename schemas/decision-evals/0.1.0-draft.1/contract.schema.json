@@ -1,0 +1,2017 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-decisions.org/schemas/decision-evals/0.1.0-draft.1/contract.schema.json",
+  "title": "Decision Evals community draft",
+  "$ref": "#/$defs/bundle",
+  "$defs": {
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "digest"
+      ]
+    },
+    "kit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ]
+    },
+    "mass": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "ppm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "label",
+        "ppm"
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "evaluatorKind": {
+          "enum": [
+            "model",
+            "deterministic",
+            "human"
+          ]
+        },
+        "runtime": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "modelRevision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revisionResolved": {
+          "type": "boolean"
+        },
+        "quantization": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "inferenceSettingsDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "promptTemplateDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "rendererDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "orderingDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "batchingDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "evidenceTransformDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "outputMappingDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scoreKind": {
+          "enum": [
+            "native-probabilities",
+            "verbalized-probabilities",
+            "logits",
+            "score"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "evaluatorKind",
+        "runtime",
+        "modelRevision",
+        "revisionResolved",
+        "quantization",
+        "inferenceSettingsDigest",
+        "promptTemplateDigest",
+        "rendererDigest",
+        "orderingDigest",
+        "batchingDigest",
+        "evidenceTransformDigest",
+        "outputMappingDigest",
+        "scoreKind"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "stage": {
+          "enum": [
+            "fact",
+            "determination"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 2,
+          "maxItems": 10000
+        },
+        "positiveLabel": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "adverseLabels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "ordinalLevels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "pattern": "^[\\s\\S]+$"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000000
+              }
+            },
+            "required": [
+              "label",
+              "level"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "id",
+        "stage",
+        "labels",
+        "positiveLabel",
+        "adverseLabels"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "evaluation-subject"
+        },
+        "kit": {
+          "$ref": "#/$defs/kit"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resource"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "configurations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/configuration"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/target"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "decisionMethod": {
+          "$ref": "#/$defs/resource"
+        },
+        "acceptancePolicyDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "kit",
+        "resources",
+        "configurations",
+        "targets",
+        "decisionMethod",
+        "acceptancePolicyDigest"
+      ]
+    },
+    "label": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "enum": [
+            "independent-adjudication",
+            "independent-observation",
+            "synthetic",
+            "model",
+            "decision-receipt"
+          ]
+        },
+        "sourceDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "adjudicationMethod": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "disagreement": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "targetId",
+        "value",
+        "source",
+        "sourceDigest",
+        "adjudicationMethod",
+        "disagreement"
+      ]
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "groupId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "split": {
+          "enum": [
+            "development",
+            "fact-fit",
+            "determination-fit",
+            "acceptance"
+          ]
+        },
+        "population": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "stratum": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "variant": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "relation": {
+          "enum": [
+            "baseline",
+            "meaning-preserving",
+            "meaning-changing",
+            "repeat",
+            "failure"
+          ]
+        },
+        "inputDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "evidenceDigests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/label"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "id",
+        "groupId",
+        "split",
+        "population",
+        "stratum",
+        "variant",
+        "relation",
+        "inputDigest",
+        "evidenceDigests",
+        "labels"
+      ]
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "benchmark-suite"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "frozenAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/case"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "requiredVariants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "id",
+        "evaluationSubjectDigest",
+        "frozenAt",
+        "cases",
+        "requiredVariants",
+        "limitations"
+      ]
+    },
+    "prediction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "native-probabilities",
+                "verbalized-probabilities"
+              ]
+            },
+            "distribution": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/mass"
+              },
+              "minItems": 2,
+              "maxItems": 10000
+            },
+            "assertedLabel": {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            }
+          },
+          "required": [
+            "kind",
+            "distribution",
+            "assertedLabel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "logits",
+                "score"
+              ]
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "pattern": "^[\\s\\S]+$"
+                  },
+                  "decimal": {
+                    "type": "string",
+                    "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+                  }
+                },
+                "required": [
+                  "label",
+                  "decimal"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 10000
+            },
+            "assertedLabel": {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            }
+          },
+          "required": [
+            "kind",
+            "values",
+            "assertedLabel"
+          ]
+        }
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "targetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "unavailable",
+            "error",
+            "invalid",
+            "unattempted"
+          ]
+        },
+        "prediction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/prediction"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issue": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "renderedRequestDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rawOutputDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "elapsedMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "costMicroUsd": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "costBasis": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        }
+      },
+      "required": [
+        "caseId",
+        "targetId",
+        "configurationDigest",
+        "status",
+        "prediction",
+        "issue",
+        "renderedRequestDigest",
+        "rawOutputDigest",
+        "attempts",
+        "elapsedMs",
+        "costMicroUsd",
+        "costBasis"
+      ]
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "benchmark-run"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "suiteDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "runner": {
+          "$ref": "#/$defs/resource"
+        },
+        "startedAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "completedAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "mode": {
+          "enum": [
+            "offline",
+            "provider"
+          ]
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observation"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "phase": {
+          "enum": [
+            "development",
+            "fact-fit",
+            "determination-fit",
+            "acceptance"
+          ]
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "id",
+        "evaluationSubjectDigest",
+        "suiteDigest",
+        "configurationDigest",
+        "runner",
+        "startedAt",
+        "completedAt",
+        "mode",
+        "observations",
+        "phase"
+      ]
+    },
+    "knot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "outputPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "inputPpm",
+        "outputPpm"
+      ]
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "minimumPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maximumPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "knots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/knot"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "label",
+        "minimumPpm",
+        "maximumPpm",
+        "knots"
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "calibration-artifact"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "targetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "stage": {
+          "enum": [
+            "fact",
+            "determination"
+          ]
+        },
+        "method": {
+          "enum": [
+            "binary-isotonic-pav-v1",
+            "categorical-isotonic-normalized-v1",
+            "identity-v1"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 2,
+          "maxItems": 10000
+        },
+        "positiveLabel": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "mappings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mapping"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "fitSuiteDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fitRunDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fitCaseIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "fitGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "population": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "strata": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "validFrom": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "validUntil": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "upstreamArtifactDigests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "evaluationSubjectDigest",
+        "configurationDigest",
+        "targetId",
+        "stage",
+        "method",
+        "labels",
+        "positiveLabel",
+        "mappings",
+        "fitSuiteDigest",
+        "fitRunDigest",
+        "fitCaseIds",
+        "fitGroupIds",
+        "population",
+        "strata",
+        "validFrom",
+        "validUntil",
+        "upstreamArtifactDigests"
+      ]
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "valuePpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[\\s\\S]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lowerPpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "upperPpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "valuePpm",
+        "n",
+        "reason",
+        "lowerPpm",
+        "upperPpm"
+      ]
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "accuracy": {
+          "$ref": "#/$defs/metric"
+        },
+        "majorityBaseline": {
+          "$ref": "#/$defs/metric"
+        },
+        "brier": {
+          "$ref": "#/$defs/metric"
+        },
+        "logLoss": {
+          "$ref": "#/$defs/metric"
+        },
+        "falseApproval": {
+          "$ref": "#/$defs/metric"
+        },
+        "falseRejection": {
+          "$ref": "#/$defs/metric"
+        },
+        "coverage": {
+          "$ref": "#/$defs/metric"
+        },
+        "selectiveError": {
+          "$ref": "#/$defs/metric"
+        },
+        "ece": {
+          "$ref": "#/$defs/metric"
+        },
+        "ordinalMae": {
+          "$ref": "#/$defs/metric"
+        }
+      },
+      "required": [
+        "accuracy",
+        "majorityBaseline",
+        "brier",
+        "logLoss",
+        "falseApproval",
+        "falseRejection",
+        "coverage",
+        "selectiveError",
+        "ece",
+        "ordinalMae"
+      ]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "acceptance-policy"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "population": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "requiredStrata": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "requiredVariants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "minimumGroups": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "maximumEcePpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maximumFalseApprovalPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maximumFalseRejectionPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "minimumCoveragePpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maximumFlipRatePpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "minimumFactConfidencePpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "minimumDeterminationReliabilityPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "validUntil": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "review": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "reviewer": {
+                  "type": "string",
+                  "pattern": "^[\\s\\S]+$"
+                },
+                "reviewedAt": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+                },
+                "evidenceDigest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "reviewer",
+                "reviewedAt",
+                "evidenceDigest"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "id",
+        "population",
+        "requiredStrata",
+        "requiredVariants",
+        "minimumGroups",
+        "maximumEcePpm",
+        "maximumFalseApprovalPpm",
+        "maximumFalseRejectionPpm",
+        "minimumCoveragePpm",
+        "maximumFlipRatePpm",
+        "minimumFactConfidencePpm",
+        "minimumDeterminationReliabilityPpm",
+        "validUntil",
+        "review"
+      ]
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "insufficient"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "reason"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scheduled": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "attempted": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "ok": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "invalid": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "error": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "unavailable": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "unattempted": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "independentGroups": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "scheduled",
+        "attempted",
+        "ok",
+        "invalid",
+        "error",
+        "unavailable",
+        "unattempted",
+        "independentGroups"
+      ]
+    },
+    "bin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "loPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "hiPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "meanPpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frequencyPpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "label",
+        "loPpm",
+        "hiPpm",
+        "n",
+        "meanPpm",
+        "frequencyPpm"
+      ]
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "validation-report"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "suiteDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "runDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "artifactDigests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "policyDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "targetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "population": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "summary": {
+          "$ref": "#/$defs/summary"
+        },
+        "raw": {
+          "$ref": "#/$defs/metrics"
+        },
+        "calibrated": {
+          "$ref": "#/$defs/metrics"
+        },
+        "reliabilityBins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bin"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "strata": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[\\s\\S]+$"
+              },
+              "metrics": {
+                "$ref": "#/$defs/metrics"
+              }
+            },
+            "required": [
+              "id",
+              "metrics"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "robustness": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "flipRate": {
+              "$ref": "#/$defs/metric"
+            },
+            "bothCorrect": {
+              "$ref": "#/$defs/metric"
+            },
+            "maximumProbabilityChangePpm": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "variants": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[\\s\\S]+$"
+                  },
+                  "metrics": {
+                    "$ref": "#/$defs/metrics"
+                  }
+                },
+                "required": [
+                  "id",
+                  "metrics"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 10000
+            }
+          },
+          "required": [
+            "flipRate",
+            "bothCorrect",
+            "maximumProbabilityChangePpm",
+            "variants"
+          ]
+        },
+        "confusion": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "expected": {
+                "type": "string",
+                "pattern": "^[\\s\\S]+$"
+              },
+              "predicted": {
+                "type": "string",
+                "pattern": "^[\\s\\S]+$"
+              },
+              "n": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000000
+              }
+            },
+            "required": [
+              "expected",
+              "predicted",
+              "n"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "latencyMs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "p50": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "p95": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "p50",
+            "p95"
+          ]
+        },
+        "costMicroUsd": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/check"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "insufficient"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "evaluationSubjectDigest",
+        "configurationDigest",
+        "suiteDigest",
+        "runDigest",
+        "artifactDigests",
+        "policyDigest",
+        "targetId",
+        "population",
+        "summary",
+        "raw",
+        "calibrated",
+        "reliabilityBins",
+        "strata",
+        "robustness",
+        "confusion",
+        "latencyMs",
+        "costMicroUsd",
+        "checks",
+        "status",
+        "limitations"
+      ]
+    },
+    "cardConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "insufficient"
+          ]
+        },
+        "reportDigests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "artifactDigests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "permittedModes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "experimental",
+              "live"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "configurationDigest",
+        "status",
+        "reportDigests",
+        "artifactDigests",
+        "permittedModes"
+      ]
+    },
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "model-card"
+        },
+        "kit": {
+          "$ref": "#/$defs/kit"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "intendedUse": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "configurations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cardConfiguration"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "datasets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "benchmarkRuns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "validationReports": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "calibrationArtifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "acceptancePolicy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        },
+        "validUntil": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "kit",
+        "evaluationSubjectDigest",
+        "intendedUse",
+        "limitations",
+        "configurations",
+        "datasets",
+        "benchmarkRuns",
+        "validationReports",
+        "calibrationArtifacts",
+        "acceptancePolicy",
+        "createdAt",
+        "validUntil"
+      ]
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "kit-release"
+        },
+        "kit": {
+          "$ref": "#/$defs/kit"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "modelCardDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resource"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "kit",
+        "evaluationSubjectDigest",
+        "modelCardDigest",
+        "resources",
+        "createdAt"
+      ]
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "evals-bundle"
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "suite": {
+          "$ref": "#/$defs/suite"
+        },
+        "runs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/run"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "reports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/report"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "policy": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/policy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "modelCard": {
+          "$ref": "#/$defs/card"
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "subject",
+        "suite",
+        "runs",
+        "artifacts",
+        "reports",
+        "policy",
+        "modelCard",
+        "release"
+      ]
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specVersion": {
+          "const": "decision-evals/0.1.0-draft.1"
+        },
+        "kind": {
+          "const": "calibration-application"
+        },
+        "evaluationSubjectDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "targetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "artifactDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inputDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "estimated",
+            "not_estimated"
+          ]
+        },
+        "distribution": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/mass"
+              },
+              "minItems": 2,
+              "maxItems": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assertedValueConfidencePpm": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\s\\S]+$"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "specVersion",
+        "kind",
+        "evaluationSubjectDigest",
+        "configurationDigest",
+        "targetId",
+        "artifactDigest",
+        "inputDigest",
+        "status",
+        "distribution",
+        "assertedValueConfidencePpm",
+        "reasons"
+      ]
+    },
+    "calibratedComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "profileVersion": {
+          "const": "calibrated-comparison/0.1.0-draft.1"
+        },
+        "evidence": {
+          "$ref": "#/$defs/bundle"
+        },
+        "comparison": {
+          "$ref": "https://open-decisions.org/schemas/comparison/0.1.0-draft.1/contract.schema.json#/$defs/bundle"
+        },
+        "executableDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "determinationTargetId": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "population": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "stratum": {
+          "type": "string",
+          "pattern": "^[\\s\\S]+$"
+        },
+        "at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "mode": {
+          "enum": [
+            "experimental",
+            "live"
+          ]
+        },
+        "acceptedReleaseDigest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "suspended": {
+          "type": "boolean"
+        },
+        "configurationDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "profileVersion",
+        "evidence",
+        "comparison",
+        "executableDigest",
+        "determinationTargetId",
+        "population",
+        "stratum",
+        "at",
+        "mode",
+        "configurationDigest"
+      ]
+    }
+  }
+}

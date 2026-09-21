@@ -1,6 +1,6 @@
 {
   "name": "open-decisions",
-  "version": "0.2.0-draft.1",
+  "version": "0.3.0-draft.1",
   "private": true,
   "description": "A community draft for portable, evidence-based decision records",
   "type": "module",
@@ -11,8 +11,10 @@
     "test": "node --test",
     "validate": "node tools/validate.mjs",
     "examples": "node tools/check-examples.mjs",
-    "check": "npm test && npm run examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check",
-    "comparison:generate": "node tools/build-comparison-validators.mjs"
+    "check": "npm test && npm run examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check && node tools/build-evals-validators.mjs --check && node tools/validate-evals.mjs examples/decision-evals/fictional-kit.json && node tools/build-evals-types.mjs --check",
+    "comparison:generate": "node tools/build-comparison-validators.mjs",
+    "evals:generate": "node tools/build-evals-validators.mjs && node tools/build-evals-types.mjs",
+    "evals:validate": "node tools/validate-evals.mjs"
   },
   "dependencies": {
     "ajv": "8.20.0",
@@ -29,6 +31,24 @@
       "types": "./comparison/contracts.d.ts",
       "default": "./comparison/contracts.mjs"
     },
-    "./comparison/schema": "./schemas/comparison/0.1.0-draft.1/contract.schema.json"
-  }
+    "./comparison/schema": "./schemas/comparison/0.1.0-draft.1/contract.schema.json",
+    "./evals": {
+      "types": "./evals/index.d.ts",
+      "default": "./evals/index.mjs"
+    },
+    "./evals/schema": "./schemas/decision-evals/0.1.0-draft.1/contract.schema.json"
+  },
+  "files": [
+    "comparison",
+    "evals",
+    "schemas",
+    "spec",
+    "examples",
+    "rfcs",
+    "docs/decision-evals-implementation.md",
+    "README.md",
+    "GOVERNANCE.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }

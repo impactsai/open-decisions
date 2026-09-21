@@ -95,3 +95,7 @@ clinical validation and professional oversight; this draft supplies neither.
 See the [design decisions](docs/design-decisions.md), [roadmap](ROADMAP.md), and
 [source notes](docs/sources.md). All repository content remains under the
 existing [MIT license](LICENSE).
+
+## Decision Evals draft
+
+[Decision Evals](spec/decision-evals/0.1.0-draft.1/core.md) defines benchmark suites, calibration artifacts, validation reports, `model-card.json`, immutable kit releases and calibration application records. Use `open-decisions/evals` for offline validation and the reference calibration functions. [RFC 0004](rfcs/0004-decision-evals.md), the [implementation plan](docs/decision-evals-implementation.md) and [fictional release](examples/decision-evals/README.md) explain its scope. This independently versioned community draft does not change existing core/comparison contracts or authorize consequential use.
