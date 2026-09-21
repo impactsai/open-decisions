@@ -1,0 +1,123 @@
+{
+  "iss": "did:web:issuer.example",
+  "jti": "urn:udid:01J9Z8Q3H4K6Y2N7T1R5V8W0XA",
+  "iat": 1796205600,
+  "nbf": 1796205600,
+  "exp": 1796206500,
+  "vct": "https://ixo.world/udid/v2",
+  "dig": "sha256:bfede07751979273951bb70dff5abe5bdc65349cab0bbe40f3e9da966e46056c",
+  "sub": "sha256:55b801e3439ba410825e6dc15456e95f51f1aa912cf5cb50489b8d69d1f26417",
+  "aud": [
+    "https://verifier.example",
+    "did:web:merchant.example"
+  ],
+  "cnf": {
+    "jwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    }
+  },
+  "status": {
+    "status_list": {
+      "idx": 0,
+      "uri": "https://issuer.example/status/fictional"
+    }
+  },
+  "dec": {
+    "type": "DecisionToBuy",
+    "outcome": "approved",
+    "reasons": [
+      "fixture:conditions-met"
+    ],
+    "confidence": 0.97,
+    "reviewed": false,
+    "reviewLevel": "none"
+  },
+  "act": {
+    "kind": "purchase",
+    "pay": {
+      "scheme": "exact",
+      "network": "example:offline",
+      "asset": "TEST",
+      "amount": "2500000",
+      "payTo": "fictional-merchant",
+      "payer": "fictional-buyer",
+      "maxTimeoutSeconds": 300
+    },
+    "resource": {
+      "urlHash": "sha256:2b2f29fab05699a0c4960db84a622386d0899e2ec5614c2c4175a63ec61fc712",
+      "description": "Fictional connectivity bundle; no order is placed."
+    },
+    "validUntil": 1796206500
+  },
+  "rub": {
+    "id": "urn:example:rubric:connectivity",
+    "version": "1.0.2",
+    "cid": "fictional-rubric-reference",
+    "blueprint": "urn:example:blueprint:connectivity"
+  },
+  "aut": {
+    "principal": "urn:example:principal",
+    "agent": "urn:example:agent",
+    "invocation": "fictional-invocation-reference",
+    "delegationRoot": "fictional-delegation-reference",
+    "cmd": "/ixo/decide/buy",
+    "policyDigest": "sha256:185a65142ccc83396b93e73c413b5105064a29389f141908e4317d7fafb00ee8"
+  },
+  "evl": {
+    "oracles": [
+      {
+        "did": "did:web:evaluator.example",
+        "model": "fictional-evaluator",
+        "version": "1"
+      }
+    ],
+    "checks": [
+      {
+        "id": "mandate.within-limits",
+        "result": "pass"
+      },
+      {
+        "id": "price.reasonable",
+        "result": "pass",
+        "score": 0.97
+      }
+    ],
+    "reviewers": [
+      "urn:example:reviewer"
+    ],
+    "trace": {
+      "cid": "fictional-trace-reference",
+      "hash": "sha256:016dd3fc45a7b5deb1cfbaa973bf43255e54780c95b375f8e1249848c66ca1ec"
+    }
+  },
+  "evd": [
+    {
+      "id": "offer",
+      "type": "application/json",
+      "hash": "sha256:ba4715c66a3d58aebc998d338d5133e5e2e6a48feb44ab6551c9cf985dc12315",
+      "accessPolicy": "urn:example:restricted"
+    }
+  ],
+  "clm": [
+    {
+      "type": "FictionalOffer",
+      "issuer": "did:web:merchant.example",
+      "hash": "sha256:ede2e54b2bca09fe01b2c7c1e4cf41d1b52158a4d302aec7de437589d8be43f2"
+    }
+  ],
+  "lnk": {
+    "x402": {
+      "resourceUrlHash": "sha256:2b2f29fab05699a0c4960db84a622386d0899e2ec5614c2c4175a63ec61fc712",
+      "acceptedHash": "sha256:6f8c7bf8456598e1e1551cc0bb0e3161094bd072e003e2800e59c1440503e8b0"
+    }
+  },
+  "explanation": "Fictional approved determination. No authority, evidence, keys, or payments have been verified.",
+  "extensions": {
+    "urn:example:fixture": {
+      "mode": "simulation",
+      "cryptographicMaterial": "placeholder"
+    }
+  }
+}

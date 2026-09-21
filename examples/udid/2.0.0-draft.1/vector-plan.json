@@ -1,0 +1,416 @@
+{
+  "profile": "udid/2.0.0-draft.1",
+  "planVersion": "1",
+  "status": "proposed",
+  "source": {
+    "title": "IXO Decisions Technical Specification v1.0 (2026-09-04)",
+    "section": "Appendix C",
+    "issue": "IXO-4658",
+    "requirement": "R-VER-1"
+  },
+  "agreement": {
+    "protocolOwner": {
+      "name": "Shaun Conway",
+      "status": "pending",
+      "evidence": null,
+      "nomination": "Self-nominated by the issue requester on 2026-09-21; artifact agreement pending."
+    },
+    "gatewayOwner": {
+      "name": "Shaun Conway",
+      "status": "pending",
+      "evidence": null,
+      "nomination": "Self-nominated by the issue requester on 2026-09-21; artifact agreement pending."
+    },
+    "independentImplementer": {
+      "name": null,
+      "status": "pending",
+      "evidence": null
+    }
+  },
+  "execution": {
+    "phase": "M1",
+    "mode": "offline-only",
+    "networkCalls": false,
+    "realActions": false,
+    "implementations": [
+      "TypeScript SDK",
+      "Python SDK",
+      "verification service"
+    ],
+    "requiredArtifacts": [
+      "exact serialized presentation bytes",
+      "processed claims and disclosure selection",
+      "fictional public keys and pinned algorithm allow-list",
+      "fixed verification context and clock",
+      "local signed status-list snapshots including failures",
+      "local redemption and group-reservation state before and after",
+      "mock payment and settlement receipts",
+      "expected output and error fields",
+      "digest preimage bytes and expected hash once resolved"
+    ],
+    "signedFixturesGenerated": false
+  },
+  "vectors": [
+    {
+      "id": 1,
+      "title": "DTB decision with EdDSA and full disclosure",
+      "source": "Appendix C.1",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-01",
+      "cases": [
+        {
+          "id": "full-disclosure",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Issuer signature, all disclosures, decision digest and payment bindings pass."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "DTB merchant disclosure",
+      "source": "Appendix C.2",
+      "status": "planned",
+      "seed": "valid/dtb-merchant-disclosure.json",
+      "blockedBy": [
+        "DIGEST-DISCLOSURE",
+        "DISCLOSURE-MINIMUM"
+      ],
+      "artifactDirectory": "m1/vector-02",
+      "cases": [
+        {
+          "id": "merchant-disclosure",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Principal is absent; required merchant claims and a recomputable decision commitment remain."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Tampered claim and disclosure",
+      "source": "Appendix C.3",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [
+        "DIGEST-DISCLOSURE",
+        "ERROR-PRECEDENCE"
+      ],
+      "artifactDirectory": "m1/vector-03",
+      "cases": [
+        {
+          "id": "tampered-signed-amount",
+          "expected": {
+            "result": "reject",
+            "error": "udid_invalid_signature"
+          },
+          "assertion": "Alter amount in issuer-signed payload without resigning."
+        },
+        {
+          "id": "tampered-disclosure",
+          "expected": {
+            "result": "reject",
+            "error": "udid_digest_mismatch"
+          },
+          "assertion": "Alter a disclosure; confirm error precedence with the protocol owner."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Payment recipient mismatch",
+      "source": "Appendix C.4",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-04",
+      "cases": [
+        {
+          "id": "payee-mismatch",
+          "expected": {
+            "result": "reject",
+            "error": "udid_binding_mismatch:payTo"
+          },
+          "assertion": "Valid token; accepted.payTo differs from act.pay.payTo."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Expired decision",
+      "source": "Appendix C.5",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-05",
+      "cases": [
+        {
+          "id": "at-expiry",
+          "expected": {
+            "result": "reject",
+            "error": "udid_expired"
+          },
+          "assertion": "Verification clock equals exp."
+        },
+        {
+          "id": "after-expiry",
+          "expected": {
+            "result": "reject",
+            "error": "udid_expired"
+          },
+          "assertion": "Verification clock is later than exp."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Revoked decision",
+      "source": "Appendix C.6",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-06",
+      "cases": [
+        {
+          "id": "revoked",
+          "expected": {
+            "result": "reject",
+            "error": "udid_revoked"
+          },
+          "assertion": "A locally supplied signed status list marks the index revoked."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Holder binding and replay",
+      "source": "Appendix C.7",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-07",
+      "cases": [
+        {
+          "id": "different-payment",
+          "expected": {
+            "result": "reject",
+            "error": "udid_kb_invalid"
+          },
+          "assertion": "Challenge is unchanged but payment_hash belongs to a different payment."
+        },
+        {
+          "id": "redeemed",
+          "expected": {
+            "result": "reject",
+            "error": "udid_redeemed"
+          },
+          "assertion": "Replay the presentation after a simulated successful settlement recorded in the local redemption store."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Upto settlement ceiling",
+      "source": "Appendix C.8",
+      "status": "planned",
+      "seed": "valid/dtb-settled.json",
+      "blockedBy": [
+        "DIGEST-SETTLED"
+      ],
+      "artifactDirectory": "m1/vector-08",
+      "cases": [
+        {
+          "id": "above-ceiling",
+          "expected": {
+            "result": "reject",
+            "error": "udid_binding_mismatch:amount"
+          },
+          "assertion": "Settled amount exceeds the declared upto ceiling by one atomic unit."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Long-lived settled receipt",
+      "source": "Appendix C.9",
+      "status": "planned",
+      "seed": "valid/dtb-settled.json",
+      "blockedBy": [
+        "DIGEST-SETTLED",
+        "COUNTERSIGNATURE",
+        "SETTLEMENT-POLICY"
+      ],
+      "artifactDirectory": "m1/vector-09",
+      "cases": [
+        {
+          "id": "after-24-hours",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Valid countersignature, unchanged jti/dig, matching settlement and absent exp; local clock is settlement + 86400 seconds."
+        },
+        {
+          "id": "after-400-days",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Same receipt with retained historical keys and explicit status policy; local clock is settlement + 34560000 seconds."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "EIP-712 commitment, replay and escrow scope",
+      "source": "Appendix C.10",
+      "status": "planned",
+      "seed": "valid/dtp-multi-leg-decision.json",
+      "blockedBy": [
+        "EIP712-ANNEX"
+      ],
+      "artifactDirectory": "m1/vector-10",
+      "cases": [
+        {
+          "id": "registered-issuer",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Local EVM release succeeds with a registered recovered issuer and funded fictional deed."
+        },
+        {
+          "id": "second-release",
+          "expected": {
+            "result": "reject",
+            "error": "udid_redeemed"
+          },
+          "assertion": "Second release of the same commitment is rejected."
+        },
+        {
+          "id": "other-chain",
+          "expected": {
+            "result": "reject"
+          },
+          "assertion": "The recovered signer is not registered under the changed chain domain."
+        },
+        {
+          "id": "other-contract",
+          "expected": {
+            "result": "reject"
+          },
+          "assertion": "The recovered signer is not registered under the changed contract domain."
+        },
+        {
+          "id": "wrong-deed",
+          "expected": {
+            "result": "reject",
+            "error": "insufficient_escrow"
+          },
+          "assertion": "Commitment for deed B cannot consume the deposits assigned to deed A."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Alternative issuer algorithms",
+      "source": "Appendix C.11",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [],
+      "artifactDirectory": "m1/vector-11",
+      "cases": [
+        {
+          "id": "es256",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "P-256 issuer signature verifies under an explicit algorithm allow-list."
+        },
+        {
+          "id": "es256k",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "secp256k1 issuer signature verifies under an explicit algorithm allow-list."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "VC 2.0 projection",
+      "source": "Appendix C.12",
+      "status": "planned",
+      "seed": "valid/dtb-decision.json",
+      "blockedBy": [
+        "VC-PROJECTION"
+      ],
+      "artifactDirectory": "m1/vector-12",
+      "cases": [
+        {
+          "id": "generic-verifier",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "A generic VC-JOSE-COSE implementation verifies the defined projection; preserve jti and semantic links."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "DTP funding, disbursement and alternatives",
+      "source": "Appendix C.13",
+      "status": "planned",
+      "seed": "valid/dtp-multi-leg-settled.json",
+      "blockedBy": [
+        "DIGEST-SETTLED",
+        "COUNTERSIGNATURE",
+        "SETTLEMENT-POLICY"
+      ],
+      "artifactDirectory": "m1/vector-13",
+      "cases": [
+        {
+          "id": "fund-and-disburse",
+          "expected": {
+            "result": "accept"
+          },
+          "assertion": "Locally mocked Arc-testnet funding and Stripe-sandbox disbursement receipts each verify against their own leg."
+        },
+        {
+          "id": "second-alternative",
+          "expected": {
+            "result": "reject"
+          },
+          "assertion": "A second adapter cannot reserve or execute another leg in the already consumed group, per R-STL-1."
+        }
+      ]
+    }
+  ],
+  "supplemental": [
+    {
+      "id": "S1",
+      "title": "Status dependency failure",
+      "expected": "udid_status_unavailable",
+      "assertion": "Timeout, malformed, stale or unavailable status material must not result in approval when verification is required; use local failing resolvers."
+    },
+    {
+      "id": "S2",
+      "title": "Missing issuer or holder key",
+      "expected": "reject",
+      "assertion": "Missing/unknown keys, unsupported algorithms and failed key resolution must not fall back to an untrusted key or skip verification."
+    },
+    {
+      "id": "S3",
+      "title": "Unprocessed and malformed JSON",
+      "expected": "reject",
+      "assertion": "Unknown profile/version/method, residual SD markers, duplicate JSON keys, malformed amounts and missing conditional fields fail closed."
+    },
+    {
+      "id": "S4",
+      "title": "Ambiguous settlement dependency",
+      "expected": "no retry or success",
+      "assertion": "A timeout or unknown upstream outcome must not release the group reservation or mark the payment settled; simulate all dependencies locally."
+    }
+  ]
+}
