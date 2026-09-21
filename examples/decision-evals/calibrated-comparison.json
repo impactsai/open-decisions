@@ -123,8 +123,8 @@
           "configurationDigest": "cad14780961db9ed2ee967651b97d633d58918283155aba4a13f6070f3561cc9",
           "status": "insufficient",
           "reportDigests": [
-            "eb4d328df6f68dfecc73beaf72b4fa1a5edbb982e309d8b923f8753afb7b7502",
-            "c29ca0ebe5a098e047d3e613fb80d9a3ce90b0f36416355429114d1924fbfd73"
+            "3846aa7fb4d91668343cf49647a0adbf3a77c915a5b466d299045a36ada27312",
+            "8327558d09c78001f5e34f22c132f618c75f5bd56dd72d3c9fc9568b65a3dc35"
           ],
           "artifactDigests": [
             "f1442f23657ff344adb35d88d5aba4a2d6a47ba4ef4754e4eb2bd3afbebd1167",
@@ -144,8 +144,8 @@
         "08fe7083a190580fdc91913436abe20e087bc40fb30a465671b7374078031514"
       ],
       "validationReports": [
-        "eb4d328df6f68dfecc73beaf72b4fa1a5edbb982e309d8b923f8753afb7b7502",
-        "c29ca0ebe5a098e047d3e613fb80d9a3ce90b0f36416355429114d1924fbfd73"
+        "3846aa7fb4d91668343cf49647a0adbf3a77c915a5b466d299045a36ada27312",
+        "8327558d09c78001f5e34f22c132f618c75f5bd56dd72d3c9fc9568b65a3dc35"
       ],
       "calibrationArtifacts": [
         "f1442f23657ff344adb35d88d5aba4a2d6a47ba4ef4754e4eb2bd3afbebd1167",
@@ -164,7 +164,7 @@
         "id": "urn:example:connectivity-dtb",
         "version": "0.1.0-experimental.1"
       },
-      "modelCardDigest": "f990c0a6c0db9adf5ff4ea73546bf8f71bd16038840fcdebe1ac966295328878",
+      "modelCardDigest": "05ecb7bb32f45393595698577bbc614986dbba49613e55670a14f9c81dbd58c6",
       "resources": [
         {
           "id": "comparison-executable.json",
@@ -176,11 +176,11 @@
         },
         {
           "id": "comparison-kit.json",
-          "digest": "6fad1a469cd4fe67f22fff9dd5a906358b68dd8670c12c20ac3a9624ecec97a7"
+          "digest": "a5495ba7a504f0eeac4c8960844439838f1ece9a80d962033e0ce101eeefb0d0"
         },
         {
           "id": "model-card.json",
-          "digest": "f990c0a6c0db9adf5ff4ea73546bf8f71bd16038840fcdebe1ac966295328878"
+          "digest": "05ecb7bb32f45393595698577bbc614986dbba49613e55670a14f9c81dbd58c6"
         }
       ],
       "specVersion": "decision-evals/0.1.0-draft.1"
@@ -783,6 +783,11 @@
             "id": "independent-labels",
             "status": "insufficient",
             "reason": "Independent reference labels are required for live use"
+          },
+          {
+            "id": "independent-fit-labels",
+            "status": "insufficient",
+            "reason": "Fitting labels also require independent reference evidence"
           },
           {
             "id": "configuration-revision",
@@ -1414,6 +1419,11 @@
             "id": "independent-labels",
             "status": "insufficient",
             "reason": "Independent reference labels are required for live use"
+          },
+          {
+            "id": "independent-fit-labels",
+            "status": "insufficient",
+            "reason": "Fitting labels also require independent reference evidence"
           },
           {
             "id": "configuration-revision",
@@ -5982,7 +5992,7 @@
             "maxBp": 10000
           },
           "acceptedCalibrationDigests": [
-            "eb4d328df6f68dfecc73beaf72b4fa1a5edbb982e309d8b923f8753afb7b7502"
+            "3846aa7fb4d91668343cf49647a0adbf3a77c915a5b466d299045a36ada27312"
           ]
         }
       ],
@@ -6004,7 +6014,7 @@
       "profileVersion": "comparison/0.1.0-draft.1",
       "kind": "evaluation-context",
       "id": "fictional-device-evidence",
-      "kitDigest": "6fad1a469cd4fe67f22fff9dd5a906358b68dd8670c12c20ac3a9624ecec97a7",
+      "kitDigest": "a5495ba7a504f0eeac4c8960844439838f1ece9a80d962033e0ce101eeefb0d0",
       "options": [
         {
           "id": "A",
@@ -6041,7 +6051,7 @@
     "assessments": {
       "profileVersion": "comparison/0.1.0-draft.1",
       "kind": "assessment-set",
-      "contextDigest": "6ae7e738adda96a0bebe8015e116a152665c303d4546cea5fa25603ce981fece",
+      "contextDigest": "d3e96334bff3a28637b5b83e148af60de8fcae4a9d25a1f1f7ec4bc63fcd30b3",
       "assessments": [
         {
           "optionId": "A",
@@ -6316,8 +6326,8 @@
       "profileVersion": "comparison/0.1.0-draft.1",
       "kind": "comparison-request",
       "id": "fictional-comparison",
-      "contextDigest": "6ae7e738adda96a0bebe8015e116a152665c303d4546cea5fa25603ce981fece",
-      "assessmentDigest": "ad521394b35c3a6eaf27e487735d01df23fd92f0e1e005b768d6e7c89a4a89b1",
+      "contextDigest": "d3e96334bff3a28637b5b83e148af60de8fcae4a9d25a1f1f7ec4bc63fcd30b3",
+      "assessmentDigest": "1c7b4e07f79dffe86044aa52885f3adba9353f05ec60c16a9e58f29e7f088fa9",
       "weights": [
         {
           "id": "balanced",

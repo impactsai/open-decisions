@@ -27,6 +27,8 @@ export async function createReport({subject,suite,run,artifact:artifactValue,pol
   const strata=[...new Set(cases.map(c=>c.stratum))].sort().map(id=>({id,metrics:scoreRows(baseline(calibrated).filter(r=>r.case.stratum===id),target,cases.filter(c=>c.stratum===id&&c.relation==='baseline').length).metrics}));
   const checks=[],add=(id,status,reason)=>checks.push({id,status,reason});
   add('independent-labels',independent&&cases.length?'passed':'insufficient','Independent reference labels are required for live use');
+  const fitLabels=artifact?artifact.fitCaseIds.map(id=>suite.cases.find(c=>c.id===id)?.labels.find(l=>l.targetId===targetId)):[];
+  add('independent-fit-labels',fitLabels.length&&fitLabels.every(l=>l&&!l.disagreement&&['independent-adjudication','independent-observation'].includes(l.source))?'passed':'insufficient','Fitting labels also require independent reference evidence');
   add('configuration-revision',v.configuration.evaluatorKind!=='model'||v.configuration.revisionResolved?'passed':'insufficient','Model aliases must resolve to an immutable revision');
   add('required-perturbations',['baseline','prompt-structure','evidence-order','question-order','answer-label-order','paraphrase','repeat'].every(f=>suite.requiredVariants.includes(f))?'passed':'insufficient','Required prompt and ordering families must be declared and measured');
   add('artifact',artifact?'passed':'insufficient','An applicable executable mapping is required');

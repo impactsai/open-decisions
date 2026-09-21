@@ -126,8 +126,8 @@
           "experimental"
         ],
         "reportDigests": [
-          "f54d245204980779a763674d0e123f9d8bbccde1c85fe3619f833f808d109496",
-          "59fe9315ebb573c99f3488f2ec08b8ef0f35e7ac4a2edb08fd0f53e6e6933296"
+          "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+          "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
         ],
         "status": "insufficient"
       }
@@ -149,8 +149,8 @@
     "specVersion": "decision-evals/0.1.0-draft.1",
     "validUntil": "2026-12-21T00:00:00Z",
     "validationReports": [
-      "f54d245204980779a763674d0e123f9d8bbccde1c85fe3619f833f808d109496",
-      "59fe9315ebb573c99f3488f2ec08b8ef0f35e7ac4a2edb08fd0f53e6e6933296"
+      "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+      "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
     ]
   },
   "policy": null,
@@ -162,14 +162,14 @@
       "id": "urn:example:dtp",
       "version": "1.0.0-experimental.1"
     },
-    "modelCardDigest": "f17132ea9a9f0a7daac2ed7823b3601a91077fecf4027479edaa7d9a9d44448c",
+    "modelCardDigest": "dabb93dead3fc7ea099370a865141811c36fb45786eea6993aac859abe093f00",
     "resources": [
       {
         "digest": "576d7f22e66b44939894590ea441a1c2931e23a065f30d1eb63869b2596437a6",
         "id": "rubric.json"
       },
       {
-        "digest": "f17132ea9a9f0a7daac2ed7823b3601a91077fecf4027479edaa7d9a9d44448c",
+        "digest": "dabb93dead3fc7ea099370a865141811c36fb45786eea6993aac859abe093f00",
         "id": "model-card.json"
       }
     ],
@@ -256,6 +256,11 @@
         {
           "id": "independent-labels",
           "reason": "Independent reference labels are required for live use",
+          "status": "insufficient"
+        },
+        {
+          "id": "independent-fit-labels",
+          "reason": "Fitting labels also require independent reference evidence",
           "status": "insufficient"
         },
         {
@@ -887,6 +892,11 @@
         {
           "id": "independent-labels",
           "reason": "Independent reference labels are required for live use",
+          "status": "insufficient"
+        },
+        {
+          "id": "independent-fit-labels",
+          "reason": "Fitting labels also require independent reference evidence",
           "status": "insufficient"
         },
         {

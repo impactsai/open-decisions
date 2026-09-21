@@ -109,3 +109,8 @@ test('categorical fitting is a separate method and missing classes prevent fitti
  for(const c of b.suite.cases.filter(c=>c.split==='fact-fit'))if(c.labels[0].value==='c')c.labels[0].value='a';
  run.suiteDigest=await e.digest(b.suite);await assert.rejects(e.fitCalibration(args),/Every target label/);
 });
+
+test('synthetic fitting labels cannot satisfy live validation even when mappings replay',async()=>{
+ const b=fixture();await e.validateBundle(b);
+ assert(b.reports.every(r=>r.checks.find(c=>c.id==='independent-fit-labels').status==='insufficient'));
+});

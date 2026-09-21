@@ -7,10 +7,10 @@
     "requestId": "fictional-comparison",
     "interpretation": "model-conditional-scenario-support",
     "inputs": {
-      "kitDigest": "6fad1a469cd4fe67f22fff9dd5a906358b68dd8670c12c20ac3a9624ecec97a7",
-      "contextDigest": "6ae7e738adda96a0bebe8015e116a152665c303d4546cea5fa25603ce981fece",
-      "assessmentDigest": "96b202c4fb0f49717bb3a08d8b0ba173801d8f3c3ecb7265b9f6a1ec617083ba",
-      "requestDigest": "a2404ef94e4789814c715e9eee24d0b73a0ad62f24625618b31cf459ae5e65a9"
+      "kitDigest": "a5495ba7a504f0eeac4c8960844439838f1ece9a80d962033e0ce101eeefb0d0",
+      "contextDigest": "d3e96334bff3a28637b5b83e148af60de8fcae4a9d25a1f1f7ec4bc63fcd30b3",
+      "assessmentDigest": "b6019d7b24cacc22e6f43ec9df77d4b986addc6ac2b2a27becaec468e63680d7",
+      "requestDigest": "b449b58ca3cdb400f5380c120ffd222112d7682a802ba96fb1d8718c2272d4c5"
     },
     "outcome": "review-required",
     "excludedOptionIds": [
@@ -36,7 +36,7 @@
     "computation": {
       "mode": "exact",
       "algorithm": "finite-exact-v1",
-      "seedMaterialDigest": "f422270faf531b3b2afcbaa71ec609dc163a6090123584e6fa294fd494e18cf5",
+      "seedMaterialDigest": "a50b8834b0c6a63020b139ea15f04daa71dcfd20bfa1db97a0f587af05024f1e",
       "processedScenarios": 1,
       "samplingError": {
         "confidencePpm": 950000,

@@ -20,8 +20,8 @@
         "experimental"
       ],
       "reportDigests": [
-        "f54d245204980779a763674d0e123f9d8bbccde1c85fe3619f833f808d109496",
-        "59fe9315ebb573c99f3488f2ec08b8ef0f35e7ac4a2edb08fd0f53e6e6933296"
+        "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+        "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
       ],
       "status": "insufficient"
     }
@@ -43,7 +43,7 @@
   "specVersion": "decision-evals/0.1.0-draft.1",
   "validUntil": "2026-12-21T00:00:00Z",
   "validationReports": [
-    "f54d245204980779a763674d0e123f9d8bbccde1c85fe3619f833f808d109496",
-    "59fe9315ebb573c99f3488f2ec08b8ef0f35e7ac4a2edb08fd0f53e6e6933296"
+    "3afd7de97f2a8eaed39a1c99802cb727bc2a4733bbc1b2e2b70345261ef788ea",
+    "2a621d30a572d64a082614a74843453bd0f8655c3a38b22679915c1a6f9dfe25"
   ]
 }
