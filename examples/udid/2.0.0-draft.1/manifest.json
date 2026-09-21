@@ -1,0 +1,153 @@
+{
+  "profile": "udid/2.0.0-draft.1",
+  "description": "Fictional processed-record examples, not signed Appendix C vectors. The source digest rule cannot recompute for both trimmed and settled forms; see RFC 0005.",
+  "fixtures": [
+    {
+      "path": "valid/dtb-decision.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/dtb-merchant-disclosure.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/dtb-settled.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/dtp-multi-leg-decision.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/dtp-multi-leg-settled.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/evaluator-unavailable.json",
+      "kind": "claim-set",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "valid/extension-info.json",
+      "kind": "info",
+      "recordValid": true,
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/unknown-version.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/raw-disclosures.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/missing-dtb-payer.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/missing-dtb-agent.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/both-lifecycle-forms.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/neither-lifecycle-form.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/unknown-scheme.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/decimal-amount.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/duplicate-leg.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "duplicate_leg",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/unknown-settlement-leg.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "unknown_leg",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/settlement-payee-mismatch.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "binding_mismatch",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/upto-over-ceiling.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "binding_mismatch",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/two-alternatives-settled.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "alternative_already_settled",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/approved-with-failed-evaluator.json",
+      "kind": "claim-set",
+      "recordValid": false,
+      "errorCode": "evaluation_incomplete",
+      "verification": "not_performed"
+    },
+    {
+      "path": "invalid/invalid-challenge.json",
+      "kind": "info",
+      "recordValid": false,
+      "errorCode": "schema",
+      "verification": "not_performed"
+    }
+  ]
+}

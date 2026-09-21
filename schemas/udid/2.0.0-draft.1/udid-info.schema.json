@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/impactsai/open-decisions/main/schemas/udid/2.0.0-draft.1/udid-info.schema.json",
+  "title": "Proposed udid extension info — Open Decisions 2.0.0-draft.1",
+  "description": "Server declaration only. No x402 registration, verifier trust, or payment authority is established. The challenge uses literal dots; no defaults are inserted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "required",
+    "decisionType",
+    "issuers",
+    "verifier",
+    "challenge"
+  ],
+  "properties": {
+    "version": {
+      "const": "2"
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "decisionType": {
+      "type": "string",
+      "enum": [
+        "DecisionToBuy",
+        "DecisionToPay"
+      ]
+    },
+    "issuers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^did:[a-z0-9]+:[^\\s/?#]+(?![\\s\\S])"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "verifier": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri"
+    },
+    "challenge": {
+      "type": "string",
+      "pattern": "^v1\\.(0|[1-9][0-9]*)\\.[0-9a-f]{16,64}(?![\\s\\S])"
+    },
+    "kb": {
+      "type": "boolean",
+      "default": true
+    },
+    "bind": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "payTo",
+          "asset",
+          "network",
+          "amount",
+          "resourceUrl",
+          "payer"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "disclose": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "rubric": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri"
+    },
+    "decideUrl": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri"
+    }
+  }
+}

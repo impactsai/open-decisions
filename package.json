@@ -1,6 +1,6 @@
 {
   "name": "open-decisions",
-  "version": "0.2.0-draft.1",
+  "version": "0.3.0-draft.1",
   "private": true,
   "description": "A community draft for portable, evidence-based decision records",
   "type": "module",
@@ -10,8 +10,10 @@
   "scripts": {
     "test": "node --test",
     "validate": "node tools/validate.mjs",
+    "validate:udid": "node tools/validate-udid.mjs",
+    "udid:examples": "node tools/check-udid-examples.mjs",
     "examples": "node tools/check-examples.mjs",
-    "check": "npm test && npm run examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check",
+    "check": "npm test && npm run examples && npm run udid:examples && node tools/check-docs.mjs && node tools/build-comparison-validators.mjs --check",
     "comparison:generate": "node tools/build-comparison-validators.mjs"
   },
   "dependencies": {
@@ -21,6 +23,9 @@
   },
   "license": "MIT",
   "exports": {
+    "./udid": "./udid/index.mjs",
+    "./udid/schema": "./schemas/udid/2.0.0-draft.1/processed-claim-set.schema.json",
+    "./udid/info-schema": "./schemas/udid/2.0.0-draft.1/udid-info.schema.json",
     "./comparison": {
       "types": "./comparison/index.d.ts",
       "default": "./comparison/index.mjs"
